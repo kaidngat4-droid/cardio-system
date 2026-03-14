@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>إدارة العمليات | نظام مركز القلب</title>
+
+<link rel="stylesheet" href="../css/style.css">
+
+<style>
+/* الحاوية */
+.container {
+    width: 95%;
+    max-width: 1200px;
+    margin: 30px auto;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* العناوين */
+.container h2 {
+    color: #0d6efd;
+    margin-bottom: 15px;
+}
+
+/* الحقول */
+.container input, 
+.container select {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+/* الأزرار */
+.save-btn {
+    background: linear-gradient(135deg,#0d6efd,#084298);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.save-btn:hover {
+    background: linear-gradient(135deg,#084298,#0d6efd);
+}
+
+.delete-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* الجدول */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #dee2e6;
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background: #0d6efd;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background: #f8f9fa;
+}
+</style>
+</head>
+<body>
+
+<header style="background:linear-gradient(135deg,#0d6efd,#001f4d);color:white;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;">
+    <h2>🫀 نظام مركز القلب</h2>
+    <div>
+        <a href="../dashboard.html" style="color:white;margin-right:10px;text-decoration:none;">لوحة التحكم</a>
+        <button onclick="logout()" style="background:#dc3545;color:white;padding:8px 12px;border:none;border-radius:6px;cursor:pointer;">تسجيل خروج</button>
+    </div>
+</header>
+
+<div class="container">
+    <h2>إضافة عملية جديدة</h2>
+    <input type="text" id="patientName" placeholder="اسم المريض">
+    <input type="date" id="operationDate" placeholder="تاريخ العملية">
+    <select id="operationType">
+        <option>قسطرة قلب</option>
+        <option>عملية قلب مفتوح</option>
+        <option>تحويلة شريانية</option>
+        <option>تفتيت حصى القلب</option>
+    </select>
+    <button class="save-btn" onclick="addOperation()">إضافة العملية</button>
+</div>
+
+<div class="container">
+    <h2>قائمة العمليات</h2>
+    <table id="operationsTable">
+        <thead>
+            <tr>
+                <th>اسم المريض</th>
+                <th>تاريخ العملية</th>
+                <th>نوع العملية</th>
+                <th>حذف</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- العمليات ستظهر هنا -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+// جلب العمليات من التخزين المحلي أو إنشاء مصفوفة جديدة
+let operations = JSON.parse(localStorage.getItem("operations")) || [];
+
+// إضافة عملية جديدة
+function addOperation() {
+    const name = document.getElementById("patientName").value.trim();
+    const date = document.getElementById("operationDate").value;
+    const type = document.getElementById("operationType").value;
+
+    if (!name || !date) {
+        alert("يرجى ملء جميع الحقول!");
+        return;
+    }
+
+    const operation = { name, date, type };
+    operations.push(operation);
+    localStorage.setItem("operations", JSON.stringify(operations));
+
+    displayOperations();
+    clearForm();
+}
+
+// مسح الحقول بعد الإضافة
+function clearForm() {
+    document.getElementById("patientName").value = "";
+    document.getElementById("operationDate").value = "";
+    document.getElementById("operationType").selectedIndex = 0;
+}
+
+// عرض العمليات في الجدول
+function displayOperations() {
+    const tbody = document.querySelector("#operationsTable tbody");
+    tbody.innerHTML = "";
+
+    operations.forEach((op, index) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${op.name}</td>
+            <td>${op.date}</td>
+            <td>${op.type}</td>
+            <td><button class="delete-btn" onclick="deleteOperation(${index})">حذف</button></td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+// حذف عملية
+function deleteOperation(index) {
+    if (confirm("هل أنت متأكد من حذف هذه العملية؟")) {
+        operations.splice(index, 1);
+        localStorage.setItem("operations", JSON.stringify(operations));
+        displayOperations();
+    }
+}
+
+// عرض العمليات عند تحميل الصفحة
+displayOperations();
+
+// دالة تسجيل الخروج
+function logout() {
+    window.location.href = "../index.html";
+}
+</script>
+
+</body>
+</html>

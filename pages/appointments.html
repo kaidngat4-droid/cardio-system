@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>إدارة المواعيد | مركز القلب</title>
+
+<!-- الخطوط -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700&display=swap" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+body{
+font-family:'Tajawal',sans-serif;
+margin:0;
+background:#f4f6f9;
+}
+
+/* ===== الهيدر ===== */
+
+header{
+
+background:linear-gradient(135deg,#0d6efd,#001f4d);
+color:white;
+padding:15px 20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+
+}
+
+header h2{
+margin:0;
+font-size:20px;
+}
+
+.nav a, .nav button{
+
+background:white;
+color:#0d6efd;
+padding:8px 12px;
+border:none;
+border-radius:6px;
+font-weight:bold;
+cursor:pointer;
+text-decoration:none;
+margin:3px;
+
+}
+
+/* ===== الحاويات ===== */
+
+.container{
+
+width:95%;
+max-width:1100px;
+margin:20px auto;
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 10px 25px rgba(0,0,0,0.1);
+
+}
+
+.container h3{
+
+color:#0d6efd;
+margin-bottom:15px;
+
+}
+
+/* ===== الحقول ===== */
+
+input, select{
+
+width:100%;
+padding:12px;
+margin:8px 0;
+border-radius:8px;
+border:1px solid #ccc;
+font-size:14px;
+
+}
+
+input:focus, select:focus{
+
+border-color:#0d6efd;
+outline:none;
+box-shadow:0 0 8px rgba(13,110,253,0.3);
+
+}
+
+/* ===== زر الإضافة ===== */
+
+.addBtn{
+
+background:linear-gradient(135deg,#0d6efd,#084298);
+color:white;
+border:none;
+padding:12px;
+border-radius:8px;
+cursor:pointer;
+font-weight:bold;
+width:100%;
+
+}
+
+.addBtn:hover{
+
+transform:scale(1.02);
+
+}
+
+/* ===== الجدول ===== */
+
+table{
+
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+
+}
+
+th,td{
+
+padding:10px;
+text-align:center;
+border:1px solid #ddd;
+
+}
+
+th{
+
+background:#0d6efd;
+color:white;
+
+}
+
+tr:nth-child(even){
+background:#f8f9fa;
+}
+
+tr:hover{
+background:#e9f0ff;
+}
+
+/* ===== زر الحذف ===== */
+
+.deleteBtn{
+
+background:#dc3545;
+color:white;
+border:none;
+border-radius:6px;
+padding:6px 10px;
+cursor:pointer;
+
+}
+
+.deleteBtn:hover{
+background:#b02a37;
+}
+
+/* ===== أيقونات ثلاثية ===== */
+
+i{
+
+margin-left:5px;
+
+text-shadow:
+0 1px 0 #ccc,
+0 2px 0 #bbb,
+0 3px 0 #999;
+
+}
+
+/* ===== موبايل ===== */
+
+@media(max-width:768px){
+
+header{
+flex-direction:column;
+gap:10px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- ===== الهيدر ===== -->
+
+<header>
+
+<h2>
+<i class="fa-solid fa-heart-pulse"></i>
+نظام مركز القلب
+</h2>
+
+<div class="nav">
+
+<a href="dashboard.html">
+<i class="fa-solid fa-house"></i>
+الرئيسية
+</a>
+
+<a href="patients.html">
+<i class="fa-solid fa-user-injured"></i>
+المرضى
+</a>
+
+<a href="appointments.html">
+<i class="fa-solid fa-calendar-check"></i>
+المواعيد
+</a>
+
+<a href="operations.html">
+<i class="fa-solid fa-bed-pulse"></i>
+العمليات
+</a>
+
+<a href="pharmacy.html">
+<i class="fa-solid fa-pills"></i>
+الصيدلية
+</a>
+
+<a href="tests.html">
+<i class="fa-solid fa-vial"></i>
+التحاليل
+</a>
+
+<a href="reports.html">
+<i class="fa-solid fa-file-medical"></i>
+التقارير
+</a>
+
+<button onclick="logout()">
+<i class="fa-solid fa-right-from-bracket"></i>
+خروج
+</button>
+
+</div>
+
+</header>
+
+
+<!-- ===== إضافة موعد ===== -->
+
+<div class="container">
+
+<h3>
+<i class="fa-solid fa-calendar-plus"></i>
+إضافة موعد جديد
+</h3>
+
+<select id="patientSelect"></select>
+
+<input type="text" id="doctor" placeholder="👨‍⚕️ اسم الطبيب">
+
+<input type="date" id="date">
+
+<input type="time" id="time">
+
+<button class="addBtn" onclick="addAppointment()">
+
+<i class="fa-solid fa-plus"></i>
+إضافة موعد
+
+</button>
+
+</div>
+
+
+<!-- ===== قائمة المواعيد ===== -->
+
+<div class="container">
+
+<h3>
+<i class="fa-solid fa-calendar-days"></i>
+قائمة المواعيد
+</h3>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>المريض</th>
+<th>الطبيب</th>
+<th>التاريخ</th>
+<th>الوقت</th>
+<th>حذف</th>
+
+</tr>
+
+</thead>
+
+<tbody id="appointmentsTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<!-- ===== الجافاسكربت ===== -->
+
+<script src="../js/appointments.js"></script>
+
+</body>
+</html>

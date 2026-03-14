@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>الوصفات الطبية | مركز القلب</title>
+
+<link rel="stylesheet" href="../css/style.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+body{
+font-family:Tajawal;
+margin:0;
+background:#f4f6f9;
+}
+
+header{
+background:linear-gradient(135deg,#0d6efd,#001f4d);
+color:white;
+padding:15px 20px;
+display:flex;
+justify-content:space-between;
+}
+
+.container{
+
+width:95%;
+max-width:1100px;
+margin:20px auto;
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 10px 25px rgba(0,0,0,0.1);
+
+}
+
+input,select{
+
+width:100%;
+padding:10px;
+margin:8px 0;
+border-radius:6px;
+border:1px solid #ccc;
+
+}
+
+button{
+
+background:#0d6efd;
+color:white;
+border:none;
+padding:10px;
+border-radius:6px;
+cursor:pointer;
+
+}
+
+table{
+
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+
+}
+
+th,td{
+
+border:1px solid #ddd;
+padding:8px;
+text-align:center;
+
+}
+
+th{
+background:#0d6efd;
+color:white;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h2>
+
+<i class="fa-solid fa-file-medical"></i>
+الوصفات الطبية
+
+</h2>
+
+<a href="dashboard.html">لوحة التحكم</a>
+
+</header>
+
+
+<div class="container">
+
+<h3>
+
+<i class="fa-solid fa-prescription"></i>
+
+إضافة وصفة
+
+</h3>
+
+<select id="patientSelect"></select>
+
+<select id="drugSelect"></select>
+
+<input type="text" id="dosage" placeholder="الجرعة">
+
+<input type="text" id="frequency" placeholder="عدد المرات يومياً">
+
+<button onclick="addPrescription()">
+
+إضافة وصفة
+
+</button>
+
+</div>
+
+
+<div class="container">
+
+<h3>قائمة الوصفات</h3>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>المريض</th>
+<th>الدواء</th>
+<th>الجرعة</th>
+<th>عدد المرات</th>
+<th>حذف</th>
+
+</tr>
+
+</thead>
+
+<tbody id="prescriptionTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<script>
+
+/* البيانات */
+
+let patients = JSON.parse(localStorage.getItem("patients")) || [];
+let drugs = JSON.parse(localStorage.getItem("drugs")) || [];
+let prescriptions = JSON.parse(localStorage.getItem("prescriptions")) || [];
+
+
+/* تحميل المرضى */
+
+function loadPatients(){
+
+let select=document.getElementById("patientSelect");
+
+select.innerHTML='<option>اختر المريض</option>';
+
+patients.forEach((p,i)=>{
+
+select.innerHTML+=`<option value="${i}">${p.name}</option>`;
+
+});
+
+}
+
+loadPatients();
+
+
+/* تحميل الأدوية */
+
+function loadDrugs(){
+
+let select=document.getElementById("drugSelect");
+
+select.innerHTML='<option>اختر الدواء</option>';
+
+drugs.forEach((d,i)=>{
+
+select.innerHTML+=`<option value="${i}">${d.name}</option>`;
+
+});
+
+}
+
+loadDrugs();
+
+
+/* إضافة وصفة */
+
+function addPrescription(){
+
+let pIndex=document.getElementById("patientSelect").value;
+let dIndex=document.getElementById("drugSelect").value;
+let dosage=document.getElementById("dosage").value;
+let frequency=document.getElementById("frequency").value;
+
+if(!dosage || !frequency){
+
+alert("يرجى تعبئة الحقول");
+
+return;
+
+}
+
+/* إنقاص المخزون */
+
+if(drugs[dIndex].quantity>0){
+
+drugs[dIndex].quantity--;
+
+localStorage.setItem("drugs",JSON.stringify(drugs));
+
+}
+
+/* إنشاء الوصفة */
+
+let prescription={
+
+patient:pIndex,
+drug:dIndex,
+dosage:dosage,
+frequency:frequency
+
+};
+
+prescriptions.push(prescription);
+
+localStorage.setItem("prescriptions",JSON.stringify(prescriptions));
+
+displayPrescriptions();
+
+}
+
+
+/* عرض الوصفات */
+
+function displayPrescriptions(){
+
+let table=document.getElementById("prescriptionTable");
+
+table.innerHTML="";
+
+prescriptions.forEach((p,i)=>{
+
+table.innerHTML+=`
+
+<tr>
+
+<td>${patients[p.patient].name}</td>
+
+<td>${drugs[p.drug].name}</td>
+
+<td>${p.dosage}</td>
+
+<td>${p.frequency}</td>
+
+<td>
+
+<button onclick="deletePrescription(${i})">
+
+🗑
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+}
+
+displayPrescriptions();
+
+
+/* حذف وصفة */
+
+function deletePrescription(index){
+
+prescriptions.splice(index,1);
+
+localStorage.setItem("prescriptions",JSON.stringify(prescriptions));
+
+displayPrescriptions();
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>الصيدلية | نظام مركز القلب</title>
+
+<link rel="stylesheet" href="../css/style.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+body{
+font-family:Tajawal;
+margin:0;
+background:#f4f6f9;
+}
+
+/* ===== الهيدر ===== */
+
+header{
+
+background:linear-gradient(135deg,#0d6efd,#001f4d);
+color:white;
+padding:15px 20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+}
+
+header h2{
+margin:0;
+font-size:20px;
+}
+
+header a,header button{
+
+background:white;
+color:#0d6efd;
+padding:8px 12px;
+border:none;
+border-radius:6px;
+font-weight:bold;
+cursor:pointer;
+text-decoration:none;
+margin-left:5px;
+
+}
+
+/* ===== الحاويات ===== */
+
+.container{
+
+width:95%;
+max-width:1200px;
+margin:25px auto;
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 10px 30px rgba(0,0,0,0.08);
+
+}
+
+/* ===== العناوين ===== */
+
+.container h3{
+
+color:#0d6efd;
+margin-bottom:15px;
+
+}
+
+/* ===== الحقول ===== */
+
+input,textarea{
+
+width:100%;
+padding:12px;
+margin:8px 0;
+border-radius:8px;
+border:1px solid #ccc;
+
+}
+
+input:focus{
+
+border-color:#0d6efd;
+outline:none;
+box-shadow:0 0 6px rgba(13,110,253,0.3);
+
+}
+
+/* ===== زر الحفظ ===== */
+
+.saveBtn{
+
+background:linear-gradient(135deg,#0d6efd,#084298);
+color:white;
+border:none;
+padding:12px;
+border-radius:8px;
+cursor:pointer;
+font-weight:bold;
+width:100%;
+
+}
+
+.saveBtn:hover{
+transform:scale(1.02);
+}
+
+/* ===== الجدول ===== */
+
+table{
+
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+
+}
+
+th,td{
+
+border:1px solid #ddd;
+padding:10px;
+text-align:center;
+
+}
+
+th{
+
+background:#0d6efd;
+color:white;
+
+}
+
+tr:nth-child(even){
+background:#f8f9fa;
+}
+
+/* ===== زر حذف ===== */
+
+.deleteBtn{
+
+background:#dc3545;
+color:white;
+border:none;
+padding:6px 10px;
+border-radius:6px;
+cursor:pointer;
+
+}
+
+/* ===== بحث ===== */
+
+.searchBox{
+
+width:100%;
+padding:10px;
+border-radius:8px;
+border:1px solid #ccc;
+
+}
+
+/* ===== تحذير انتهاء ===== */
+
+.expired{
+
+background:#ffe5e5;
+
+}
+
+.warning{
+
+background:#fff3cd;
+
+}
+
+/* ===== الإحصائيات ===== */
+
+.stats{
+
+display:flex;
+gap:15px;
+margin-bottom:15px;
+
+}
+
+.statCard{
+
+background:#f1f5ff;
+padding:10px;
+border-radius:8px;
+flex:1;
+text-align:center;
+font-weight:bold;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h2>
+
+<i class="fa-solid fa-pills"></i>
+نظام صيدلية مركز القلب
+
+</h2>
+
+<div>
+
+<a href="dashboard.html">
+
+<i class="fa-solid fa-house"></i>
+الرئيسية
+
+</a>
+
+<button onclick="logout()">
+
+<i class="fa-solid fa-right-from-bracket"></i>
+خروج
+
+</button>
+
+</div>
+
+</header>
+
+
+<div class="container">
+
+<h3>
+
+<i class="fa-solid fa-capsules"></i>
+إضافة دواء
+
+</h3>
+
+<input type="text" id="drugName" placeholder="💊 اسم الدواء">
+
+<input type="number" id="quantity" placeholder="📦 الكمية">
+
+<input type="date" id="expiryDate">
+
+<textarea id="notes" placeholder="ملاحظات"></textarea>
+
+<button class="saveBtn" onclick="addDrug()">
+
+<i class="fa-solid fa-plus"></i>
+إضافة الدواء
+
+</button>
+
+</div>
+
+
+<div class="container">
+
+<h3>
+
+<i class="fa-solid fa-warehouse"></i>
+مخزون الأدوية
+
+</h3>
+
+<div class="stats">
+
+<div class="statCard">
+
+<i class="fa-solid fa-pills"></i>
+الأدوية
+
+<span id="drugCount">0</span>
+
+</div>
+
+</div>
+
+<input class="searchBox"
+
+id="searchDrug"
+
+placeholder="🔎 البحث عن دواء"
+
+onkeyup="searchDrug()">
+
+<table id="pharmacyTable">
+
+<thead>
+
+<tr>
+
+<th>الدواء</th>
+<th>الكمية</th>
+<th>الانتهاء</th>
+<th>ملاحظات</th>
+<th>حذف</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<script>
+
+/* حماية الصفحة */
+
+if(localStorage.getItem("loggedIn") !== "true"){
+
+window.location.href="../index.html";
+
+}
+
+
+/* جلب البيانات */
+
+let drugs = JSON.parse(localStorage.getItem("drugs")) || [];
+
+
+/* إضافة دواء */
+
+function addDrug(){
+
+let name = document.getElementById("drugName").value.trim();
+let quantity = document.getElementById("quantity").value;
+let expiry = document.getElementById("expiryDate").value;
+let notes = document.getElementById("notes").value.trim();
+
+if(!name || !quantity || !expiry){
+
+alert("يرجى تعبئة جميع الحقول");
+
+return;
+
+}
+
+let drug={
+
+name:name,
+quantity:quantity,
+expiry:expiry,
+notes:notes
+
+};
+
+drugs.push(drug);
+
+localStorage.setItem("drugs",JSON.stringify(drugs));
+
+displayDrugs();
+
+clearForm();
+
+}
+
+
+/* عرض الأدوية */
+
+function displayDrugs(){
+
+let tbody=document.querySelector("#pharmacyTable tbody");
+
+tbody.innerHTML="";
+
+document.getElementById("drugCount").innerText=drugs.length;
+
+let today=new Date();
+
+drugs.forEach((d,i)=>{
+
+let rowClass="";
+
+let expiryDate=new Date(d.expiry);
+
+let diff=(expiryDate-today)/(1000*60*60*24);
+
+if(diff<0){
+
+rowClass="expired";
+
+}
+
+else if(diff<30){
+
+rowClass="warning";
+
+}
+
+tbody.innerHTML+=`
+
+<tr class="${rowClass}">
+
+<td>
+
+<i class="fa-solid fa-capsules"></i>
+
+${d.name}
+
+</td>
+
+<td>${d.quantity}</td>
+
+<td>${d.expiry}</td>
+
+<td>${d.notes}</td>
+
+<td>
+
+<button class="deleteBtn"
+
+onclick="deleteDrug(${i})">
+
+<i class="fa-solid fa-trash"></i>
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+}
+
+displayDrugs();
+
+
+/* حذف دواء */
+
+function deleteDrug(index){
+
+if(confirm("هل تريد حذف الدواء؟")){
+
+drugs.splice(index,1);
+
+localStorage.setItem("drugs",JSON.stringify(drugs));
+
+displayDrugs();
+
+}
+
+}
+
+
+/* بحث */
+
+function searchDrug(){
+
+let search=document.getElementById("searchDrug").value.toLowerCase();
+
+let rows=document.querySelectorAll("#pharmacyTable tbody tr");
+
+rows.forEach(r=>{
+
+let name=r.children[0].innerText.toLowerCase();
+
+if(name.includes(search)){
+
+r.style.display="";
+
+}else{
+
+r.style.display="none";
+
+}
+
+});
+
+}
+
+
+/* تنظيف */
+
+function clearForm(){
+
+document.getElementById("drugName").value="";
+document.getElementById("quantity").value="";
+document.getElementById("expiryDate").value="";
+document.getElementById("notes").value="";
+
+}
+
+
+/* تسجيل خروج */
+
+function logout(){
+
+localStorage.removeItem("loggedIn");
+
+window.location.href="../index.html";
+
+}
+
+</script>
+
+</body>
+</html>

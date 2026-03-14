@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>إدارة التحاليل | نظام مركز القلب</title>
+
+<link rel="stylesheet" href="../css/style.css">
+
+<style>
+.container {
+    width: 95%;
+    max-width: 1200px;
+    margin: 30px auto;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+h2 {
+    color: #0d6efd;
+    margin-bottom: 15px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+button.add-btn {
+    background: linear-gradient(135deg,#0d6efd,#084298);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+button.add-btn:hover {
+    background: linear-gradient(135deg,#084298,#0d6efd);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #dee2e6;
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background: #0d6efd;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background: #f8f9fa;
+}
+
+.delete-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.delete-btn:hover {
+    background: #ff6666;
+}
+
+</style>
+</head>
+<body>
+
+<header style="background:linear-gradient(135deg,#0d6efd,#001f4d);color:white;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;">
+    <h2>🧪 إدارة التحاليل</h2>
+    <div>
+        <a href="../dashboard.html" style="color:white;margin-right:10px;text-decoration:none;">لوحة التحكم</a>
+        <button onclick="logout()" style="background:#dc3545;color:white;padding:8px 12px;border:none;border-radius:6px;cursor:pointer;">تسجيل خروج</button>
+    </div>
+</header>
+
+<div class="container">
+    <h2>إضافة تحليل جديد</h2>
+    <input type="text" id="patientName" placeholder="اسم المريض">
+    <input type="text" id="testType" placeholder="نوع التحليل">
+    <input type="date" id="testDate" placeholder="تاريخ التحليل">
+    <textarea id="testResult" placeholder="نتيجة التحليل"></textarea>
+    <button class="add-btn" onclick="addTest()">إضافة تحليل</button>
+</div>
+
+<div class="container">
+    <h2>قائمة التحاليل</h2>
+    <table id="testsTable">
+        <thead>
+            <tr>
+                <th>المريض</th>
+                <th>نوع التحليل</th>
+                <th>تاريخ التحليل</th>
+                <th>النتيجة</th>
+                <th>حذف</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<script>
+// جلب البيانات من localStorage
+let tests = JSON.parse(localStorage.getItem("tests")) || [];
+
+// إضافة تحليل جديد
+function addTest() {
+    const patient = document.getElementById("patientName").value.trim();
+    const type = document.getElementById("testType").value.trim();
+    const date = document.getElementById("testDate").value;
+    const result = document.getElementById("testResult").value.trim();
+
+    if(!patient || !type || !date || !result) {
+        alert("يرجى ملء جميع الحقول");
+        return;
+    }
+
+    const test = { patient, type, date, result };
+    tests.push(test);
+    localStorage.setItem("tests", JSON.stringify(tests));
+    displayTests();
+
+    // مسح الحقول بعد الإضافة
+    document.getElementById("patientName").value = '';
+    document.getElementById("testType").value = '';
+    document.getElementById("testDate").value = '';
+    document.getElementById("testResult").value = '';
+}
+
+// عرض التحاليل في الجدول
+function displayTests() {
+    const tbody = document.querySelector("#testsTable tbody");
+    tbody.innerHTML = '';
+    tests.forEach((t, i) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${t.patient}</td>
+            <td>${t.type}</td>
+            <td>${t.date}</td>
+            <td>${t.result}</td>
+            <td><button class="delete-btn" onclick="deleteTest(${i})">حذف</button></td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+// حذف تحليل
+function deleteTest(index) {
+    if(confirm("هل أنت متأكد من حذف هذا التحليل؟")){
+        tests.splice(index,1);
+        localStorage.setItem("tests", JSON.stringify(tests));
+        displayTests();
+    }
+}
+
+// عرض البيانات عند التحميل
+displayTests();
+
+// تسجيل الخروج
+function logout() {
+    window.location.href = "../index.html";
+}
+</script>
+
+</body>
+</html>

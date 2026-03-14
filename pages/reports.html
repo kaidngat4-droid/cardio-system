@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>التقارير | نظام مركز القلب</title>
+
+<link rel="stylesheet" href="../css/style.css">
+
+<style>
+.container {
+    width: 95%;
+    max-width: 1200px;
+    margin: 30px auto;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+h2 {
+    color: #0d6efd;
+    margin-bottom: 15px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #dee2e6;
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background: #0d6efd;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background: #f8f9fa;
+}
+
+.export-btn {
+    background: linear-gradient(135deg,#0d6efd,#084298);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.export-btn:hover {
+    background: linear-gradient(135deg,#084298,#0d6efd);
+}
+</style>
+</head>
+<body>
+
+<header style="background:linear-gradient(135deg,#0d6efd,#001f4d);color:white;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;">
+    <h2>📊 تقارير النظام</h2>
+    <div>
+        <a href="../dashboard.html" style="color:white;margin-right:10px;text-decoration:none;">لوحة التحكم</a>
+        <button onclick="logout()" style="background:#dc3545;color:white;padding:8px 12px;border:none;border-radius:6px;cursor:pointer;">تسجيل خروج</button>
+    </div>
+</header>
+
+<div class="container">
+    <h2>قائمة المرضى</h2>
+    <table id="patientsReport">
+        <thead>
+            <tr>
+                <th>الاسم</th>
+                <th>العمر</th>
+                <th>الجنس</th>
+                <th>الهاتف</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <button class="export-btn" onclick="exportTableToExcel('patientsReport','patients_report')">تصدير إلى Excel</button>
+</div>
+
+<div class="container">
+    <h2>قائمة الوصفات الطبية</h2>
+    <table id="prescriptionsReport">
+        <thead>
+            <tr>
+                <th>المريض</th>
+                <th>الدواء</th>
+                <th>الجرعة</th>
+                <th>ملاحظات</th>
+                <th>التاريخ</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <button class="export-btn" onclick="exportTableToExcel('prescriptionsReport','prescriptions_report')">تصدير إلى Excel</button>
+</div>
+
+<script>
+// جلب البيانات من localStorage
+let patients = JSON.parse(localStorage.getItem("patients")) || [];
+let prescriptions = JSON.parse(localStorage.getItem("prescriptions")) || [];
+
+// عرض المرضى
+function displayPatientsReport() {
+    const tbody = document.querySelector("#patientsReport tbody");
+    tbody.innerHTML = "";
+    patients.forEach(p => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${p.name}</td>
+            <td>${p.age}</td>
+            <td>${p.gender}</td>
+            <td>${p.phone}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+// عرض الوصفات
+function displayPrescriptionsReport() {
+    const tbody = document.querySelector("#prescriptionsReport tbody");
+    tbody.innerHTML = "";
+    prescriptions.forEach(p => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${p.patient}</td>
+            <td>${p.medication}</td>
+            <td>${p.dosage}</td>
+            <td>${p.notes}</td>
+            <td>${p.date}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+// تصدير الجدول إلى Excel
+function exportTableToExcel(tableID, filename = ''){
+    let downloadLink;
+    const dataType = 'application/vnd.ms-excel';
+    const tableSelect = document.getElementById(tableID);
+    const tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+    filename = filename?filename+'.xls':'excel_data.xls';
+    downloadLink = document.createElement("a");
+    document.body.appendChild(downloadLink);
+    if(navigator.msSaveOrOpenBlob){
+        const blob = new Blob(['\ufeff', tableHTML], { type: dataType });
+        navigator.msSaveOrOpenBlob(blob, filename);
+    }else{
+        downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+        downloadLink.download = filename;
+        downloadLink.click();
+    }
+}
+
+// عرض البيانات عند التحميل
+displayPatientsReport();
+displayPrescriptionsReport();
+
+// تسجيل الخروج
+function logout() {
+    window.location.href = "../index.html";
+}
+</script>
+
+</body>
+</html>

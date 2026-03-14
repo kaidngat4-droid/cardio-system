@@ -1,1 +1,302 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>لوحة التحكم | مركز القلب</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+/* حماية الصفحة */
+
+if(localStorage.getItem("loggedIn") !== "true"){
+window.location.href="../index.html";
+}
+
+</script>
+
+<style>
+
+body{
+font-family:Tajawal;
+margin:0;
+background:#f4f6f9;
+}
+
+/* ===== الهيدر ===== */
+
+header{
+
+background:linear-gradient(135deg,#0d6efd,#001f4d);
+color:white;
+padding:15px 20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+}
+
+header h2{
+margin:0;
+font-size:22px;
+}
+
+.headerBtns button{
+
+background:white;
+border:none;
+padding:8px 14px;
+border-radius:6px;
+cursor:pointer;
+font-weight:bold;
+color:#0d6efd;
+
+}
+
+/* ===== لوحة التحكم ===== */
+
+.dashboard{
+
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+padding:25px;
+
+}
+
+.card{
+
+background:white;
+border-radius:15px;
+padding:20px;
+text-align:center;
+box-shadow:0 10px 25px rgba(0,0,0,0.1);
+transition:0.3s;
+
+}
+
+.card:hover{
+transform:translateY(-5px);
+}
+
+.card i{
+
+font-size:35px;
+color:#0d6efd;
+margin-bottom:10px;
+
+}
+
+.card h3{
+margin:10px 0;
+}
+
+.card p{
+
+font-size:28px;
+font-weight:bold;
+
+}
+
+.card a{
+
+display:inline-block;
+margin-top:10px;
+background:#0d6efd;
+color:white;
+padding:6px 12px;
+border-radius:6px;
+text-decoration:none;
+
+}
+
+/* ===== الرسم البياني ===== */
+
+.chartBox{
+
+width:90%;
+margin:auto;
+background:white;
+padding:20px;
+border-radius:15px;
+box-shadow:0 10px 25px rgba(0,0,0,0.1);
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h2>
+<i class="fa-solid fa-heart-pulse"></i>
+نظام إدارة مركز القلب
+</h2>
+
+<div class="headerBtns">
+
+<button onclick="logout()">
+
+<i class="fa-solid fa-right-from-bracket"></i>
+تسجيل خروج
+
+</button>
+
+</div>
+
+</header>
+
+
+<!-- ===== الكروت ===== -->
+
+<div class="dashboard">
+
+<div class="card">
+
+<i class="fa-solid fa-user-injured"></i>
+
+<h3>عدد المرضى</h3>
+
+<p id="patientsCount">0</p>
+
+<a href="patients.html">
+عرض المرضى
+</a>
+
+</div>
+
+
+<div class="card">
+
+<i class="fa-solid fa-calendar-check"></i>
+
+<h3>المواعيد</h3>
+
+<p id="appointmentsCount">0</p>
+
+<a href="appointments.html">
+إدارة المواعيد
+</a>
+
+</div>
+
+
+<div class="card">
+
+<i class="fa-solid fa-pills"></i>
+
+<h3>الأدوية</h3>
+
+<p id="medicineCount">0</p>
+
+<a href="pharmacy.html">
+الصيدلية
+</a>
+
+</div>
+
+
+<div class="card">
+
+<i class="fa-solid fa-truck-medical"></i>
+
+<h3>الطوارئ</h3>
+
+<p>1</p>
+
+<a href="reports.html">
+التقارير
+</a>
+
+</div>
+
+</div>
+
+
+<!-- ===== الرسم البياني ===== -->
+
+<div class="chartBox">
+
+<canvas id="statsChart"></canvas>
+
+</div>
+
+
+<script>
+
+/* البيانات */
+
+let patients = JSON.parse(localStorage.getItem("patients")) || [];
+let appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+let medicines = JSON.parse(localStorage.getItem("medicines")) || [];
+
+
+/* عرض الأعداد */
+
+document.getElementById("patientsCount").innerText = patients.length;
+document.getElementById("appointmentsCount").innerText = appointments.length;
+document.getElementById("medicineCount").innerText = medicines.length;
+
+
+/* الرسم البياني */
+
+const ctx = document.getElementById('statsChart');
+
+new Chart(ctx, {
+
+type: 'bar',
+
+data: {
+
+labels: ['المرضى','المواعيد','الأدوية'],
+
+datasets: [{
+
+label: 'إحصائيات مركز القلب',
+
+data: [patients.length,appointments.length,medicines.length],
+
+borderWidth:1
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+plugins:{
+legend:{display:false}
+}
+
+}
+
+});
+
+
+/* تسجيل خروج */
+
+function logout(){
+
+localStorage.removeItem("loggedIn");
+
+window.location.href="../index.html";
+
+}
+
+</script>
+
+</body>
+</html>
