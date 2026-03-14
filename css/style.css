@@ -1,1 +1,278 @@
-Setup project folder structure
+/* ===== الإعدادات العامة ===== */
+
+body{
+font-family:Tahoma, 'Tajawal', sans-serif;
+margin:0;
+background:#f4f6f9;
+direction:rtl;
+}
+
+
+/* ===== صفحة تسجيل الدخول ===== */
+
+.loginPage{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#0d6efd,#001f4d);
+}
+
+.loginBox{
+background:white;
+padding:40px;
+border-radius:15px;
+width:320px;
+text-align:center;
+box-shadow:0 10px 40px rgba(0,0,0,0.3);
+}
+
+.loginBox h1{
+color:#0d6efd;
+margin-bottom:20px;
+}
+
+.loginBox input{
+width:100%;
+padding:10px;
+margin:10px 0;
+border-radius:8px;
+border:1px solid #ccc;
+font-size:14px;
+}
+
+.loginBox input:focus{
+outline:none;
+border-color:#0d6efd;
+box-shadow:0 0 6px rgba(13,110,253,0.3);
+}
+
+.loginBox button{
+width:100%;
+padding:10px;
+background:#0d6efd;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-weight:bold;
+transition:0.3s;
+}
+
+.loginBox button:hover{
+background:#084298;
+}
+
+
+/* ===== الهيدر ===== */
+
+header{
+background:linear-gradient(135deg,#0d6efd,#001f4d);
+color:white;
+padding:15px 20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+}
+
+header h2{
+margin:0;
+font-size:20px;
+}
+
+header a, header button{
+background:white;
+color:#0d6efd;
+padding:8px 12px;
+border:none;
+border-radius:6px;
+font-weight:bold;
+cursor:pointer;
+text-decoration:none;
+margin-left:5px;
+transition:0.3s;
+}
+
+header a:hover,
+header button:hover{
+background:#e6e6e6;
+}
+
+
+/* ===== الحاويات ===== */
+
+.container{
+width:95%;
+max-width:1200px;
+margin:20px auto;
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+
+/* ===== لوحة التحكم ===== */
+
+.dashboard{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+padding:20px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:12px;
+text-align:center;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+}
+
+.card h3{
+color:#0d6efd;
+margin-bottom:10px;
+}
+
+.card p{
+font-size:28px;
+font-weight:bold;
+}
+
+
+/* ===== النماذج ===== */
+
+input, select{
+width:100%;
+padding:10px;
+margin:8px 0;
+border-radius:6px;
+border:1px solid #ccc;
+font-size:14px;
+}
+
+button{
+padding:10px 15px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.addBtn{
+background:#0d6efd;
+color:white;
+}
+
+.deleteBtn{
+background:#dc3545;
+color:white;
+}
+
+
+/* ===== الجداول ===== */
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+}
+
+th, td{
+padding:10px;
+border:1px solid #ddd;
+text-align:center;
+}
+
+th{
+background:#0d6efd;
+color:white;
+}
+
+tr:nth-child(even){
+background:#f9f9f9;
+}
+
+tr:hover{
+background:#f1f1f1;
+}
+
+
+/* ===== توقيع المطور ===== */
+
+.developerSignatureNeon{
+
+margin-top:15px;
+font-size:16px;
+text-align:center;
+font-weight:700;
+font-family:'Aref Ruqaa', serif;
+letter-spacing:1.5px;
+
+background: linear-gradient(
+45deg,
+#ff0000,
+#ff7f00,
+#ffff00,
+#00ffcc,
+#007fff,
+#ff00ff
+);
+
+background-size:600%;
+
+-webkit-background-clip:text;
+background-clip:text;
+color:transparent;
+
+text-shadow:
+0 0 5px #ff0000,
+0 0 10px #ff7f00,
+0 0 15px #ffff00,
+0 0 20px #00ffcc,
+0 0 25px #007fff,
+0 0 30px #ff00ff;
+
+animation:neonGlow 8s linear infinite alternate;
+
+}
+
+@keyframes neonGlow{
+
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+
+}
+
+
+/* ===== الموبايل ===== */
+
+@media(max-width:768px){
+
+header{
+flex-direction:column;
+gap:10px;
+}
+
+.dashboard{
+grid-template-columns:1fr;
+}
+
+}
+.icon3d{
+font-size:16px;
+
+text-shadow:
+0 1px 0 #ccc,
+0 2px 0 #bbb,
+0 3px 0 #999,
+0 4px 0 #888,
+0 5px 0 #777;
+}

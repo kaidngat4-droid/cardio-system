@@ -1,0 +1,113 @@
+/* ======== خطوط الجسم ======== */
+body {
+    font-family: "Tahoma", Arial, sans-serif;
+    margin: 0;
+    background: #f4f6f9;
+    direction: rtl;
+    color: #333;
+}
+
+/* ======== الهيدر ======== */
+header {
+    background: linear-gradient(135deg, #0d6efd, #001f4d);
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+header h2 {
+    margin: 0;
+    font-size: 22px;
+}
+
+/* ======== أزرار الهيدر ======== */
+.headerBtns a,
+.headerBtns button {
+    background: #ffffff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    margin-right: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: none;
+    color: #0d6efd;
+    transition: 0.3s;
+}
+
+.headerBtns a:hover,
+.headerBtns button:hover {
+    background: #e6e6e6;
+}
+
+/* ======== لوحة التحكم ======== */
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 30px;
+}
+
+/* ======== كروت المعلومات ======== */
+.card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+.card h3 {
+    color: #0d6efd;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.card p {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+/* رابط الكارت */
+.card a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 14px;
+    background: #0d6efd;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.card a:hover {
+    background: #084298;
+}
+
+/* ======== استجابة الهواتف ======== */
+@media (max-width: 768px) {
+    header h2 {
+        font-size: 20px;
+    }
+
+    .dashboard {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+
+    .card p {
+        font-size: 24px;
+    }
+}
