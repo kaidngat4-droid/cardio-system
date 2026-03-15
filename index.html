@@ -238,9 +238,39 @@ body{
 /* ===== عرض شاشة التحميل 2 ثواني ===== */
 window.addEventListener("load", function(){
     // تشغيل صوت القلب مباشرة عند ظهور صفحة الدخول
-    const heartbeat = document.getElementById("heartbeatSound");
-    heartbeat.volume = 0.4; // مستوى الصوت
-    heartbeat.play().catch(e=>console.log(e));
+document.getElementById("loginBtn").addEventListener("click", function(){
+
+let user = document.getElementById("username").value;
+let pass = document.getElementById("password").value;
+
+let heartbeat = document.getElementById("heartbeatSound");
+
+if(user === "admin" && pass === "770075098"){
+
+/* تشغيل الصوت بعد الضغط */
+heartbeat.volume = 0.4;
+heartbeat.play().catch(e=>console.log(e));
+
+localStorage.setItem("loggedIn","true");
+
+/* إيقاف الصوت بعد 30 ثانية */
+setTimeout(()=>{
+heartbeat.pause();
+heartbeat.currentTime = 0;
+},30000);
+
+/* الانتقال إلى لوحة التحكم */
+setTimeout(()=>{
+window.location.href="pages/dashboard.html";
+},1000);
+
+}else{
+
+document.getElementById("error").innerText="بيانات الدخول غير صحيحة";
+
+}
+
+});
 
     setTimeout(()=>{
         document.getElementById("loadingScreen").style.display="none";
