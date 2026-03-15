@@ -2,6 +2,7 @@
 <html lang="ar" dir="rtl">
 
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -14,9 +15,10 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 
 <style>
 
-/* ===== الخلفية ===== */
+/* الخلفية */
 
 body{
+
 font-family:'Tajawal',sans-serif;
 margin:0;
 height:100vh;
@@ -31,18 +33,22 @@ background-position:center;
 display:flex;
 justify-content:center;
 align-items:center;
+
 }
 
-/* ===== شاشة التحميل ===== */
+/* شاشة التحميل */
 
 #loadingScreen{
+
 position:fixed;
+
 top:0;
 left:0;
+
 width:100%;
 height:100%;
 
-background:rgba(0,0,0,0.85);
+background:#000;
 
 display:flex;
 flex-direction:column;
@@ -50,9 +56,8 @@ justify-content:center;
 align-items:center;
 
 color:white;
-font-size:18px;
-
 z-index:9999;
+
 }
 
 /* ECG */
@@ -62,47 +67,38 @@ z-index:9999;
 width:80%;
 height:100px;
 
+background:black;
+
 border:2px solid #0d6efd;
 
-margin:20px 0;
-
-position:relative;
 overflow:hidden;
 
-background:#000;
+margin-top:20px;
 
 }
 
-.ecgLine{
+#ecg svg{
 
-position:absolute;
+width:200%;
 
-width:4px;
-height:100%;
-
-background:#00ff00;
-
-left:0;
-
-animation:ecgMove 1s linear infinite;
+animation:ecgMove 4s linear infinite;
 
 }
 
 @keyframes ecgMove{
 
-0%{left:0;}
-
-100%{left:100%;}
+0%{transform:translateX(0)}
+100%{transform:translateX(-50%)}
 
 }
 
-/* ===== صندوق تسجيل الدخول ===== */
+/* صندوق تسجيل الدخول */
 
 .loginBox{
 
 background:rgba(255,255,255,0.96);
 
-padding:45px 35px;
+padding:40px;
 
 border-radius:20px;
 
@@ -113,8 +109,6 @@ text-align:center;
 
 box-shadow:0 20px 60px rgba(0,0,0,0.4);
 
-backdrop-filter:blur(8px);
-
 display:none;
 
 }
@@ -124,7 +118,6 @@ display:none;
 .logo{
 
 width:90px;
-
 margin-bottom:10px;
 
 }
@@ -134,17 +127,13 @@ margin-bottom:10px;
 .official{
 
 font-size:14px;
-
 line-height:1.6;
-
-color:#333;
 
 }
 
 .ministry{
 
 font-weight:bold;
-
 color:#0d6efd;
 
 }
@@ -152,7 +141,6 @@ color:#0d6efd;
 .hospital{
 
 font-weight:bold;
-
 color:#198754;
 
 }
@@ -162,36 +150,32 @@ color:#198754;
 .systemTitle{
 
 font-family:'Aref Ruqaa',serif;
-
 font-size:26px;
-
 margin:15px 0;
 
 color:#0d6efd;
 
 }
 
-/* القلب */
+/* القلب النابض */
 
 .heartIcon{
 
-font-size:55px;
+font-size:60px;
 
 color:#e60023;
 
-margin-bottom:10px;
-
-animation:heartBeat 1.2s infinite;
+animation:heartBeat 1.1s infinite;
 
 }
 
 @keyframes heartBeat{
 
-0%{transform:scale(1);}
-20%{transform:scale(1.25);}
-40%{transform:scale(1);}
-60%{transform:scale(1.18);}
-100%{transform:scale(1);}
+0%{transform:scale(1)}
+25%{transform:scale(1.3)}
+40%{transform:scale(1)}
+60%{transform:scale(1.2)}
+100%{transform:scale(1)}
 
 }
 
@@ -200,26 +184,19 @@ animation:heartBeat 1.2s infinite;
 .loginBox input{
 
 width:100%;
-
 padding:12px;
-
 margin:10px 0;
 
 border-radius:10px;
-
 border:1px solid #ccc;
 
 font-size:14px;
-
-outline:none;
 
 }
 
 .loginBox input:focus{
 
 border-color:#0d6efd;
-
-box-shadow:0 0 8px rgba(13,110,253,0.4);
 
 }
 
@@ -228,17 +205,14 @@ box-shadow:0 0 8px rgba(13,110,253,0.4);
 .loginBox button{
 
 width:100%;
-
 padding:12px;
 
 background:linear-gradient(135deg,#0d6efd,#001f4d);
 
 border:none;
-
 color:white;
 
 font-size:16px;
-
 font-weight:bold;
 
 border-radius:10px;
@@ -247,21 +221,12 @@ cursor:pointer;
 
 }
 
-.loginBox button:hover{
-
-transform:scale(1.03);
-
-}
-
-/* رسالة الخطأ */
+/* الخطأ */
 
 #error{
 
 color:red;
-
 margin-top:10px;
-
-font-weight:bold;
 
 }
 
@@ -271,36 +236,12 @@ font-weight:bold;
 
 margin-top:20px;
 
-font-size:14px;
-
 font-weight:bold;
 
-text-align:center;
-
-background:linear-gradient(
-90deg,
-#ff0000,
-#ff8800,
-#ffee00,
-#00ccff,
-#0066ff,
-#ff0000
-);
-
-background-size:300%;
+background:linear-gradient(90deg,#ff0000,#ffaa00,#00ccff,#ff0000);
 
 -webkit-background-clip:text;
-
 color:transparent;
-
-animation:devGlow 6s linear infinite;
-
-}
-
-@keyframes devGlow{
-
-0%{background-position:0%;}
-100%{background-position:300%;}
 
 }
 
@@ -314,18 +255,46 @@ animation:devGlow 6s linear infinite;
 
 <div id="loadingScreen">
 
-<div>
-جاري تحميل بيانات المرضى...
-</div>
+<div>جاري تحميل بيانات النظام...</div>
 
 <div id="ecg">
-<div class="ecgLine"></div>
-</div>
+
+<svg viewBox="0 0 1000 200">
+
+<polyline
+
+fill="none"
+
+stroke="#00ff00"
+
+stroke-width="4"
+
+points="
+
+0,100
+100,100
+150,60
+200,140
+250,100
+350,100
+400,50
+450,150
+500,100
+650,100
+700,60
+750,140
+800,100
+1000,100
+
+"/>
+
+</svg>
 
 </div>
 
+</div>
 
-<!-- صفحة تسجيل الدخول -->
+<!-- صفحة الدخول -->
 
 <div class="loginBox">
 
@@ -333,15 +302,9 @@ animation:devGlow 6s linear infinite;
 
 <div class="official">
 
-<span class="ministry">
-وزارة الصحة والبيئة
-</span>
+<span class="ministry">وزارة الصحة والبيئة</span><br>
 
-<br>
-
-<span class="hospital">
-هيئة مستشفى الثورة العام – إب
-</span>
+<span class="hospital">هيئة مستشفى الثورة العام – إب</span>
 
 </div>
 
@@ -369,27 +332,26 @@ animation:devGlow 6s linear infinite;
 
 <div class="developerSignature">
 
-برمجة وتصميم  
-<br>
+برمجة وتصميم<br>
 D / Salah Al-ahdel
 
 </div>
 
 </div>
 
-
 <!-- صوت القلب -->
 
-<audio id="heartbeatSound" preload="auto">
-<source src="sounds/heartbeat.mp3" type="audio/mpeg">
-</audio>
+<audio id="heartbeatSound" loop>
 
+<source src="sounds/heartbeat.mp3" type="audio/mpeg">
+
+</audio>
 
 <script>
 
-/* ===== شاشة التحميل ===== */
+/* التحميل */
 
-window.addEventListener("load", function(){
+window.addEventListener("load",function(){
 
 setTimeout(()=>{
 
@@ -397,43 +359,50 @@ document.getElementById("loadingScreen").style.display="none";
 
 document.querySelector(".loginBox").style.display="block";
 
+/* تشغيل الصوت عند ظهور الصفحة */
+
+let sound=document.getElementById("heartbeatSound");
+
+sound.volume=0.4;
+
+sound.play().catch(()=>{
+
+/* في حال منع الصوت */
+
+document.body.addEventListener("click",function(){
+
+sound.play();
+
+},{once:true});
+
+});
+
 },2000);
 
 });
 
 
-/* ===== تسجيل الدخول ===== */
+/* تسجيل الدخول */
 
-document.getElementById("loginBtn").addEventListener("click", function(){
+document.getElementById("loginBtn").addEventListener("click",function(){
 
-let user = document.getElementById("username").value;
+let user=document.getElementById("username").value;
 
-let pass = document.getElementById("password").value;
+let pass=document.getElementById("password").value;
 
-let heartbeat = document.getElementById("heartbeatSound");
-
-if(user === "admin" && pass === "770075098"){
-
-/* تشغيل صوت القلب */
-
-heartbeat.volume = 0.5;
-
-heartbeat.play().catch(e=>console.log(e));
+if(user==="admin" && pass==="770075098"){
 
 localStorage.setItem("loggedIn","true");
 
 /* إيقاف الصوت بعد 30 ثانية */
 
+let sound=document.getElementById("heartbeatSound");
+
 setTimeout(()=>{
 
-heartbeat.pause();
-
-heartbeat.currentTime = 0;
+sound.pause();
 
 },30000);
-
-
-/* الانتقال للوحة التحكم */
 
 setTimeout(()=>{
 
