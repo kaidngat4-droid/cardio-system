@@ -6,142 +6,103 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>إدارة المرضى | مركز القلب</title>
+<title>ملف المريض | نظام مركز القلب</title>
 
-<!-- الخطوط -->
-<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
-
-<!-- أيقونات -->
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
 
 body{
-font-family:'Tajawal','Aref Ruqaa',sans-serif;
-margin:0;
+font-family:Tajawal;
 background:#f4f6f9;
+margin:0;
 }
-
-/* ===== الهيدر ===== */
 
 header{
 
 background:linear-gradient(135deg,#0d6efd,#001f4d);
 color:white;
-padding:15px 20px;
-display:flex;
-justify-content:space-between;
-align-items:center;
+padding:15px;
+text-align:center;
+font-size:22px;
 
 }
-
-header h2{
-margin:0;
-font-size:20px;
-}
-
-header a, header button{
-
-background:white;
-color:#0d6efd;
-padding:8px 12px;
-border:none;
-border-radius:6px;
-font-weight:bold;
-cursor:pointer;
-text-decoration:none;
-margin-left:5px;
-
-}
-
-
-/* ===== الحاوية ===== */
 
 .container{
 
 width:95%;
-max-width:1000px;
-margin:20px auto;
-background:white;
+max-width:1100px;
+margin:auto;
 padding:20px;
-border-radius:12px;
-box-shadow:0 10px 25px rgba(0,0,0,0.1);
 
 }
 
+.card{
 
-/* ===== العناوين ===== */
+background:white;
+padding:20px;
+border-radius:12px;
+margin-bottom:20px;
+box-shadow:0 5px 20px rgba(0,0,0,0.1);
 
-.container h3{
+}
+
+.card h3{
 
 color:#0d6efd;
 margin-bottom:15px;
 
 }
 
+.grid{
 
-/* ===== الحقول ===== */
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:10px;
 
-.container input,
-.container select{
+}
 
-width:100%;
-padding:12px;
-margin:8px 0;
-border-radius:8px;
+input,select{
+
+padding:10px;
+border-radius:6px;
 border:1px solid #ccc;
-font-size:14px;
+width:100%;
 
 }
 
-.container input:focus,
-.container select:focus{
+button{
 
-border-color:#0d6efd;
-box-shadow:0 0 8px rgba(13,110,253,0.3);
-outline:none;
-
-}
-
-
-/* ===== زر الإضافة ===== */
-
-button.addBtn{
-
-background:linear-gradient(135deg,#0d6efd,#084298);
+background:#0d6efd;
 color:white;
+padding:10px 20px;
 border:none;
 border-radius:8px;
 cursor:pointer;
-font-weight:bold;
-padding:12px;
 margin-top:10px;
 
 }
 
-button.addBtn:hover{
+button:hover{
 
-transform:scale(1.02);
+background:#084298;
 
 }
-
-
-/* ===== الجدول ===== */
 
 table{
 
 width:100%;
 border-collapse:collapse;
-margin-top:20px;
+margin-top:10px;
 
 }
 
-th, td{
+table th,table td{
 
-padding:10px;
-text-align:center;
 border:1px solid #ddd;
+padding:8px;
+text-align:center;
 
 }
 
@@ -152,163 +113,229 @@ color:white;
 
 }
 
-tr:nth-child(even){
-background:#f8f9fa;
-}
-
-tr:hover{
-background:#e9f0ff;
-}
-
-
-/* ===== زر الحذف ===== */
-
-button.deleteBtn{
-
-background:#dc3545;
-color:white;
-border:none;
-border-radius:6px;
-padding:6px 10px;
-cursor:pointer;
-
-}
-
-button.deleteBtn:hover{
-
-background:#b02a37;
-
-}
-
-
-/* ===== الموبايل ===== */
-
-@media(max-width:768px){
-
-.container{
-padding:15px;
-}
-
-table th, table td{
-font-size:13px;
-padding:8px;
-}
-
-}
-
 </style>
 
 </head>
 
 <body>
 
-<!-- ===== الهيدر ===== -->
-
 <header>
 
-<h2>
-<i class="fa-solid fa-heart-pulse"></i>
-نظام مركز القلب
-</h2>
-
-<div>
-
-<a href="dashboard.html">
-<i class="fa-solid fa-house"></i>
-لوحة التحكم
-</a>
-
-<button onclick="logout()">
-<i class="fa-solid fa-right-from-bracket"></i>
-تسجيل خروج
-</button>
-
-</div>
+🫀 ملف المريض – نظام مركز القلب
 
 </header>
 
-
-<!-- ===== إضافة مريض ===== -->
-
 <div class="container">
 
-<h3>
-<i class="fa-solid fa-user-plus"></i>
-إضافة مريض جديد
-</h3>
+<!-- بيانات المريض -->
 
-<input type="text" id="name" placeholder="اسم المريض">
+<div class="card">
 
-<input type="number" id="age" placeholder="العمر">
+<h3>1️⃣ البيانات الأساسية للمريض (Patient Demo)</h3>
+
+<div class="grid">
+
+<input id="patientId" placeholder="رقم المريض (تلقائي)" readonly>
+
+<input id="fullName" placeholder="الاسم الكامل">
+
+<input id="nationalId" placeholder="الرقم الوطني">
+
+<input id="age" placeholder="العمر">
 
 <select id="gender">
-
-<option value="ذكر">ذكر</option>
-<option value="أنثى">أنثى</option>
-
+<option value="">الجنس</option>
+<option>ذكر</option>
+<option>أنثى</option>
 </select>
 
-<input type="text" id="phone" placeholder="رقم الهاتف">
+<select id="bloodType">
+<option value="">فصيلة الدم</option>
+<option>A+</option>
+<option>A-</option>
+<option>B+</option>
+<option>B-</option>
+<option>AB+</option>
+<option>O+</option>
+<option>O-</option>
+</select>
 
-<button class="addBtn" onclick="addPatient()">
+</div>
 
-<i class="fa-solid fa-plus"></i>
-إضافة مريض
+</div>
 
+<!-- التاريخ المرضي -->
+
+<div class="card">
+
+<h3>2️⃣ التاريخ المرضي والعوامل الخطرة</h3>
+
+<div class="grid">
+
+<input id="diagnosis" placeholder="تشخيصات سابقة (CAD / MI)">
+
+<input id="hypertension" placeholder="ضغط الدم">
+
+<input id="diabetes" placeholder="السكري">
+
+<input id="cholesterol" placeholder="الكوليسترول">
+
+<select id="smoking">
+<option value="">التدخين</option>
+<option>نعم</option>
+<option>لا</option>
+</select>
+
+<select id="familyHistory">
+<option value="">تاريخ عائلي لأمراض القلب</option>
+<option>نعم</option>
+<option>لا</option>
+</select>
+
+</div>
+
+</div>
+
+<!-- الفحوصات -->
+
+<div class="card">
+
+<h3>3️⃣ النتائج السريرية والفحوصات</h3>
+
+<div class="grid">
+
+<input id="bloodPressure" placeholder="ضغط الدم">
+
+<input id="heartRate" placeholder="معدل ضربات القلب">
+
+<input id="hdl" placeholder="HDL">
+
+<input id="ldl" placeholder="LDL">
+
+<input id="triglycerides" placeholder="Triglycerides">
+
+<input id="fbs" placeholder="FBS">
+
+<input id="hba1c" placeholder="HbA1c">
+
+<input id="ecg" placeholder="نتيجة ECG">
+
+</div>
+
+</div>
+
+<!-- العلاج -->
+
+<div class="card">
+
+<h3>4️⃣ الإجراءات والعلاج</h3>
+
+<div class="grid">
+
+<input id="medications" placeholder="الأدوية (Aspirin / Statins / Beta Blockers)">
+
+<input id="procedures" placeholder="الإجراءات (Angioplasty / CABG)">
+
+</div>
+
+<button onclick="savePatient()">
+💾 حفظ بيانات المريض
 </button>
 
 </div>
 
+<!-- جدول المرضى -->
 
-<!-- ===== قائمة المرضى ===== -->
+<div class="card">
 
-<div class="container">
-
-<h3>
-<i class="fa-solid fa-users"></i>
-قائمة المرضى
-</h3>
+<h3>📋 سجل المرضى</h3>
 
 <table>
 
 <thead>
 
 <tr>
-
+<th>رقم المريض</th>
 <th>الاسم</th>
 <th>العمر</th>
-<th>الجنس</th>
-<th>الهاتف</th>
-<th>حذف</th>
-
+<th>التشخيص</th>
+<th>ضغط الدم</th>
+<th>الإجراءات</th>
 </tr>
 
 </thead>
 
-<tbody id="patientsTable">
-
-</tbody>
+<tbody id="patientsTable"></tbody>
 
 </table>
 
 </div>
 
+</div>
 
 <script>
 
-/* حماية الصفحة */
+let patients = JSON.parse(localStorage.getItem("patients")) || [];
 
-if(localStorage.getItem("loggedIn") !== "true"){
+function generateId(){
 
-alert("يرجى تسجيل الدخول");
-
-window.location.href="../index.html";
+return "P-" + Math.floor(Math.random()*100000);
 
 }
 
-</script>
+document.getElementById("patientId").value = generateId();
 
-<script src="../js/patients.js"></script>
+function savePatient(){
+
+let patient = {
+
+id:document.getElementById("patientId").value,
+name:document.getElementById("fullName").value,
+age:document.getElementById("age").value,
+diagnosis:document.getElementById("diagnosis").value,
+bloodPressure:document.getElementById("bloodPressure").value,
+procedures:document.getElementById("procedures").value
+
+};
+
+patients.push(patient);
+
+localStorage.setItem("patients",JSON.stringify(patients));
+
+displayPatients();
+
+}
+
+function displayPatients(){
+
+let table = document.getElementById("patientsTable");
+
+table.innerHTML="";
+
+patients.forEach(p=>{
+
+table.innerHTML+=`
+
+<tr>
+
+<td>${p.id}</td>
+<td>${p.name}</td>
+<td>${p.age}</td>
+<td>${p.diagnosis}</td>
+<td>${p.bloodPressure}</td>
+<td>${p.procedures}</td>
+
+</tr>
+
+`;
+
+});
+
+}
+
+displayPatients();
+
+</script>
 
 </body>
 </html>
