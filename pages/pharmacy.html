@@ -1,3 +1,4 @@
+id="1r8c9m"
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
@@ -13,194 +14,45 @@
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
 
-body{
-font-family:Tajawal;
-margin:0;
-background:#f4f6f9;
-}
-
-/* ===== الهيدر ===== */
-
-header{
-
-background:linear-gradient(135deg,#0d6efd,#001f4d);
-color:white;
-padding:15px 20px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-
-}
-
-header h2{
-margin:0;
-font-size:20px;
-}
-
-header a,header button{
-
+.section{
 background:white;
-color:#0d6efd;
-padding:8px 12px;
-border:none;
-border-radius:6px;
-font-weight:bold;
-cursor:pointer;
-text-decoration:none;
-margin-left:5px;
-
-}
-
-/* ===== الحاويات ===== */
-
-.container{
-
-width:95%;
-max-width:1200px;
-margin:25px auto;
-background:white;
-padding:25px;
-border-radius:15px;
-box-shadow:0 10px 30px rgba(0,0,0,0.08);
-
-}
-
-/* ===== العناوين ===== */
-
-.container h3{
-
-color:#0d6efd;
-margin-bottom:15px;
-
-}
-
-/* ===== الحقول ===== */
-
-input,textarea{
-
-width:100%;
-padding:12px;
-margin:8px 0;
-border-radius:8px;
-border:1px solid #ccc;
-
-}
-
-input:focus{
-
-border-color:#0d6efd;
-outline:none;
-box-shadow:0 0 6px rgba(13,110,253,0.3);
-
-}
-
-/* ===== زر الحفظ ===== */
-
-.saveBtn{
-
-background:linear-gradient(135deg,#0d6efd,#084298);
-color:white;
-border:none;
-padding:12px;
-border-radius:8px;
-cursor:pointer;
-font-weight:bold;
-width:100%;
-
-}
-
-.saveBtn:hover{
-transform:scale(1.02);
-}
-
-/* ===== الجدول ===== */
-
-table{
-
-width:100%;
-border-collapse:collapse;
+padding:20px;
+border-radius:10px;
 margin-top:20px;
-
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
 
-th,td{
-
-border:1px solid #ddd;
-padding:10px;
-text-align:center;
-
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:10px;
 }
-
-th{
-
-background:#0d6efd;
-color:white;
-
-}
-
-tr:nth-child(even){
-background:#f8f9fa;
-}
-
-/* ===== زر حذف ===== */
-
-.deleteBtn{
-
-background:#dc3545;
-color:white;
-border:none;
-padding:6px 10px;
-border-radius:6px;
-cursor:pointer;
-
-}
-
-/* ===== بحث ===== */
-
-.searchBox{
-
-width:100%;
-padding:10px;
-border-radius:8px;
-border:1px solid #ccc;
-
-}
-
-/* ===== تحذير انتهاء ===== */
-
-.expired{
-
-background:#ffe5e5;
-
-}
-
-.warning{
-
-background:#fff3cd;
-
-}
-
-/* ===== الإحصائيات ===== */
 
 .stats{
-
-display:flex;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
 gap:15px;
-margin-bottom:15px;
-
 }
 
-.statCard{
-
-background:#f1f5ff;
-padding:10px;
-border-radius:8px;
-flex:1;
+.statBox{
+background:#eef3ff;
+padding:15px;
+border-radius:10px;
 text-align:center;
+font-size:18px;
 font-weight:bold;
+}
 
+.alertBox{
+background:#fff3cd;
+border-left:5px solid #ffc107;
+padding:15px;
+border-radius:8px;
+margin-top:10px;
 }
 
 </style>
@@ -211,309 +63,216 @@ font-weight:bold;
 
 <header>
 
-<h2>
-
-<i class="fa-solid fa-pills"></i>
-نظام صيدلية مركز القلب
-
-</h2>
+<h2>💊 صيدلية مركز القلب</h2>
 
 <div>
 
-<a href="dashboard.html">
+<a href="dashboard.html"><i class="fa fa-home"></i> الرئيسية</a>
 
-<i class="fa-solid fa-house"></i>
-الرئيسية
+<a href="patients.html"><i class="fa fa-user-injured"></i> المرضى</a>
 
-</a>
+<a href="appointments.html"><i class="fa fa-calendar-check"></i> المواعيد</a>
 
-<button onclick="logout()">
+<a href="tests.html"><i class="fa fa-flask"></i> التحاليل</a>
 
-<i class="fa-solid fa-right-from-bracket"></i>
-خروج
+<a href="operations.html"><i class="fa fa-heart-pulse"></i> العمليات</a>
 
-</button>
+<a href="reports.html"><i class="fa fa-chart-line"></i> التقارير</a>
 
 </div>
 
 </header>
 
-
 <div class="container">
 
-<h3>
+<h2>🫀 نظام إدارة الصيدلية</h2>
 
-<i class="fa-solid fa-capsules"></i>
-إضافة دواء
 
-</h3>
+<!-- الإحصائيات -->
 
-<input type="text" id="drugName" placeholder="💊 اسم الدواء">
+<div class="stats">
 
-<input type="number" id="quantity" placeholder="📦 الكمية">
+<div class="statBox">
+💊 عدد الأدوية
+<br>
+<span id="totalMedicines">0</span>
+</div>
 
-<input type="date" id="expiryDate">
+<div class="statBox">
+🧾 عدد الوصفات
+<br>
+<span id="totalPrescriptions">0</span>
+</div>
 
-<textarea id="notes" placeholder="ملاحظات"></textarea>
+<div class="statBox">
+💰 إجمالي الإيرادات
+<br>
+<span id="totalRevenue">0</span>
+</div>
 
-<button class="saveBtn" onclick="addDrug()">
+</div>
 
-<i class="fa-solid fa-plus"></i>
-إضافة الدواء
+
+<!-- التنبيهات -->
+
+<div class="section">
+
+<h3>⚠ تنبيهات الصيدلية</h3>
+
+<ul id="alertsBox"></ul>
+
+</div>
+
+
+<!-- إضافة دواء -->
+
+<div class="section">
+
+<h3>➕ إضافة دواء للمخزون</h3>
+
+<div class="grid">
+
+<input id="medName" placeholder="اسم الدواء">
+
+<input id="dose" placeholder="الجرعة">
+
+<input id="quantity" type="number" placeholder="الكمية">
+
+<input id="price" type="number" placeholder="السعر">
+
+<input id="unit" placeholder="الوحدة (علبة / شريط)">
+
+<input id="expiry" type="date">
+
+</div>
+
+<br>
+
+<button class="addBtn" onclick="addMedicine()">
+💾 حفظ الدواء
+</button>
+
+</div>
+
+
+<!-- صرف دواء -->
+
+<div class="section">
+
+<h3>💊 صرف دواء لمريض</h3>
+
+<div class="grid">
+
+<select id="patientSelect"></select>
+
+<select id="medSelect"></select>
+
+<input id="medQty" type="number" placeholder="الكمية">
+
+<input id="instructions" placeholder="تعليمات الاستخدام">
+
+</div>
+
+<br>
+
+<button class="addBtn" onclick="addPrescription()">
+
+🧾 صرف الدواء
 
 </button>
 
 </div>
 
 
-<div class="container">
+<!-- البحث -->
 
-<h3>
+<div class="section">
 
-<i class="fa-solid fa-warehouse"></i>
-مخزون الأدوية
-
-</h3>
-
-<div class="stats">
-
-<div class="statCard">
-
-<i class="fa-solid fa-pills"></i>
-الأدوية
-
-<span id="drugCount">0</span>
+<input id="searchInput" placeholder="🔎 بحث عن دواء..." onkeyup="searchMedicine()">
 
 </div>
 
-</div>
 
-<input class="searchBox"
+<!-- جدول الأدوية -->
 
-id="searchDrug"
+<div class="section">
 
-placeholder="🔎 البحث عن دواء"
+<h3>📦 مخزون الأدوية</h3>
 
-onkeyup="searchDrug()">
-
-<table id="pharmacyTable">
+<table>
 
 <thead>
 
 <tr>
 
 <th>الدواء</th>
+<th>الجرعة</th>
 <th>الكمية</th>
-<th>الانتهاء</th>
-<th>ملاحظات</th>
+<th>الوحدة</th>
+<th>السعر</th>
+<th>الصلاحية</th>
+<th>الحالة</th>
 <th>حذف</th>
 
 </tr>
 
 </thead>
 
-<tbody>
-
-</tbody>
+<tbody id="medTable"></tbody>
 
 </table>
 
 </div>
 
 
-<script>
+<!-- جدول الوصفات -->
 
-/* حماية الصفحة */
+<div class="section">
 
-if(localStorage.getItem("loggedIn") !== "true"){
+<h3>🧾 وصفات المرضى</h3>
 
-window.location.href="../index.html";
+<table>
 
-}
+<thead>
 
+<tr>
 
-/* جلب البيانات */
-
-let drugs = JSON.parse(localStorage.getItem("drugs")) || [];
-
-
-/* إضافة دواء */
-
-function addDrug(){
-
-let name = document.getElementById("drugName").value.trim();
-let quantity = document.getElementById("quantity").value;
-let expiry = document.getElementById("expiryDate").value;
-let notes = document.getElementById("notes").value.trim();
-
-if(!name || !quantity || !expiry){
-
-alert("يرجى تعبئة جميع الحقول");
-
-return;
-
-}
-
-let drug={
-
-name:name,
-quantity:quantity,
-expiry:expiry,
-notes:notes
-
-};
-
-drugs.push(drug);
-
-localStorage.setItem("drugs",JSON.stringify(drugs));
-
-displayDrugs();
-
-clearForm();
-
-}
-
-
-/* عرض الأدوية */
-
-function displayDrugs(){
-
-let tbody=document.querySelector("#pharmacyTable tbody");
-
-tbody.innerHTML="";
-
-document.getElementById("drugCount").innerText=drugs.length;
-
-let today=new Date();
-
-drugs.forEach((d,i)=>{
-
-let rowClass="";
-
-let expiryDate=new Date(d.expiry);
-
-let diff=(expiryDate-today)/(1000*60*60*24);
-
-if(diff<0){
-
-rowClass="expired";
-
-}
-
-else if(diff<30){
-
-rowClass="warning";
-
-}
-
-tbody.innerHTML+=`
-
-<tr class="${rowClass}">
-
-<td>
-
-<i class="fa-solid fa-capsules"></i>
-
-${d.name}
-
-</td>
-
-<td>${d.quantity}</td>
-
-<td>${d.expiry}</td>
-
-<td>${d.notes}</td>
-
-<td>
-
-<button class="deleteBtn"
-
-onclick="deleteDrug(${i})">
-
-<i class="fa-solid fa-trash"></i>
-
-</button>
-
-</td>
+<th>المريض</th>
+<th>رقم المريض</th>
+<th>الدواء</th>
+<th>الجرعة</th>
+<th>الكمية</th>
+<th>السعر</th>
+<th>التعليمات</th>
+<th>التاريخ</th>
 
 </tr>
 
-`;
+</thead>
 
-});
+<tbody id="prescriptionsTable"></tbody>
 
-}
+</table>
 
-displayDrugs();
-
-
-/* حذف دواء */
-
-function deleteDrug(index){
-
-if(confirm("هل تريد حذف الدواء؟")){
-
-drugs.splice(index,1);
-
-localStorage.setItem("drugs",JSON.stringify(drugs));
-
-displayDrugs();
-
-}
-
-}
+</div>
 
 
-/* بحث */
+<!-- الرسم البياني -->
 
-function searchDrug(){
+<div class="section">
 
-let search=document.getElementById("searchDrug").value.toLowerCase();
+<h3>📊 مخزون الأدوية</h3>
 
-let rows=document.querySelectorAll("#pharmacyTable tbody tr");
+<canvas id="medChart"></canvas>
 
-rows.forEach(r=>{
-
-let name=r.children[0].innerText.toLowerCase();
-
-if(name.includes(search)){
-
-r.style.display="";
-
-}else{
-
-r.style.display="none";
-
-}
-
-});
-
-}
+</div>
 
 
-/* تنظيف */
-
-function clearForm(){
-
-document.getElementById("drugName").value="";
-document.getElementById("quantity").value="";
-document.getElementById("expiryDate").value="";
-document.getElementById("notes").value="";
-
-}
+</div>
 
 
-/* تسجيل خروج */
-
-function logout(){
-
-localStorage.removeItem("loggedIn");
-
-window.location.href="../index.html";
-
-}
-
-</script>
+<script src="../js/pharmacy.js"></script>
 
 </body>
+
 </html>
