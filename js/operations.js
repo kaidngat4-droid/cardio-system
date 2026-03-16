@@ -124,3 +124,15 @@ data:[angioplasty,cabg,pacemaker]
 }
 
 loadOperations();
+let operations = JSON.parse(localStorage.getItem("operations")) || [];
+
+function addOperation(patientIndex, operationType, surgeon, status){
+    if(patientIndex === "") return alert("اختر المريض");
+    let patient = patients[patientIndex];
+
+    let op = { patient: patient.name, operationType, surgeon, status };
+    operations.push(op);
+    localStorage.setItem("operations", JSON.stringify(operations));
+
+    alertOperation(patient.name, operationType, status);
+}
