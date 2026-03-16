@@ -36,14 +36,8 @@ justify-content:space-between;
 align-items:center;
 }
 
-header h2{
-margin:0;
-}
-
-/* الحاوية */
-
 .container{
-max-width:1200px;
+max-width:1300px;
 margin:auto;
 padding:20px;
 }
@@ -62,7 +56,7 @@ margin-bottom:20px;
 
 .formGrid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
 gap:10px;
 }
 
@@ -83,20 +77,9 @@ cursor:pointer;
 font-weight:bold;
 }
 
-.addBtn{
-background:#0d6efd;
-color:white;
-}
-
-.smsBtn{
-background:#198754;
-color:white;
-}
-
-.printBtn{
-background:#6c757d;
-color:white;
-}
+.addBtn{background:#0d6efd;color:white;}
+.smsBtn{background:#198754;color:white;}
+.printBtn{background:#6c757d;color:white;}
 
 /* التقويم */
 
@@ -109,15 +92,24 @@ margin-top:20px;
 .stats{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:10px;
+gap:15px;
 }
 
 .statBox{
 background:#eef3ff;
-padding:15px;
+padding:20px;
 border-radius:10px;
 text-align:center;
 font-size:18px;
+}
+
+/* بيانات المريض */
+
+.patientInfo{
+background:#f1f5ff;
+padding:15px;
+border-radius:10px;
+margin-top:10px;
 }
 
 /* QR */
@@ -137,13 +129,13 @@ margin-top:20px;
 
 <h2>🫀 إدارة المواعيد - مركز القلب</h2>
 
-<button onclick="window.print()">🖨 طباعة</button>
+<button class="printBtn" onclick="window.print()">🖨 طباعة</button>
 
 </header>
 
 <div class="container">
 
-<!-- إضافة موعد -->
+<!-- حجز موعد -->
 
 <div class="card">
 
@@ -151,7 +143,7 @@ margin-top:20px;
 
 <div class="formGrid">
 
-<select id="patientSelect">
+<select id="patientSelect" onchange="showPatientInfo()">
 <option value="">اختر المريض</option>
 </select>
 
@@ -172,6 +164,10 @@ margin-top:20px;
 
 </div>
 
+<div class="patientInfo" id="patientInfo">
+بيانات المريض ستظهر هنا
+</div>
+
 <br>
 
 <button class="addBtn" onclick="addAppointment()">💾 حفظ الموعد</button>
@@ -180,11 +176,11 @@ margin-top:20px;
 
 </div>
 
-<!-- الإحصائيات -->
+<!-- إحصائيات -->
 
 <div class="card">
 
-<h3>📊 إحصائيات ضغط العيادة</h3>
+<h3>📊 إحصائيات المركز</h3>
 
 <div class="stats">
 
@@ -198,6 +194,12 @@ margin-top:20px;
 إجمالي المواعيد
 <br>
 <span id="totalAppointments">0</span>
+</div>
+
+<div class="statBox">
+عدد المرضى
+<br>
+<span id="totalPatients">0</span>
 </div>
 
 </div>
@@ -228,49 +230,83 @@ margin-top:20px;
 
 <script>
 
-/* المرضى */
+/* تحميل البيانات */
 
 let patients = JSON.parse(localStorage.getItem("patients")) || [];
 let appointments = JSON.parse(localStorage.getItem("appointments")) || [];
 
-/* تعبئة قائمة المرضى */
+let patientSelect = document.getElementById("patientSelect");
 
-let patientSelect=document.getElementById("patientSelect");
+/* تعبئة المرضى */
 
-patients.forEach((p,i)=>{
+patients.forEach((p,index)=>{
 
 let option=document.createElement("option");
-option.value=i;
-option.textContent=p.name;
+
+option.value=index;
+
+option.textContent = p.id + " | " + p.name;
 
 patientSelect.appendChild(option);
 
 });
 
+document.getElementById("totalPatients").innerText = patients.length;
+
+/* عرض بيانات المريض */
+
+function showPatientInfo(){
+
+let index = patientSelect.value;
+
+if(index==="") return;
+
+let p = patients[index];
+
+document.getElementById("patientInfo").innerHTML =
+
+`
+<b>الاسم:</b> ${p.name} <br>
+<b>العمر:</b> ${p.age} <br>
+<b>الجنس:</b> ${p.gender} <br>
+<b>رقم المريض:</b> ${p.id}
+`;
+
+}
+
 /* إضافة موعد */
 
 function addAppointment(){
 
-let patientIndex=patientSelect.value;
-let date=document.getElementById("date").value;
-let time=document.getElementById("time").value;
-let service=document.getElementById("service").value;
-let doctor=document.getElementById("doctor").value;
-let location=document.getElementById("location").value;
+let index = patientSelect.value;
 
-if(patientIndex===""){
+if(index===""){
+
 alert("اختر المريض");
+
 return;
+
 }
 
-let appointment={
+let p = patients[index];
 
-patient:patients[patientIndex].name,
-date:date,
-time:time,
-service:service,
-doctor:doctor,
-location:location
+let appointment = {
+
+id:"APT-"+Date.now(),
+
+patientId:p.id,
+
+patient:p.name,
+
+date:document.getElementById("date").value,
+
+time:document.getElementById("time").value,
+
+service:document.getElementById("service").value,
+
+doctor:document.getElementById("doctor").value,
+
+location:document.getElementById("location").value
 
 };
 
@@ -278,10 +314,13 @@ appointments.push(appointment);
 
 localStorage.setItem("appointments",JSON.stringify(appointments));
 
+generateQR(appointment.id);
+
 loadCalendar();
+
 updateStats();
 
-alert("تم حفظ الموعد");
+alert("تم حجز الموعد بنجاح");
 
 }
 
@@ -291,18 +330,23 @@ function loadCalendar(){
 
 let calendarEl=document.getElementById("calendar");
 
-let events=appointments.map(a=>{
+let events = appointments.map(a=>{
 
 return{
+
 title:a.patient+" - "+a.service,
+
 start:a.date+"T"+a.time
+
 };
 
 });
 
-let calendar=new FullCalendar.Calendar(calendarEl,{
+let calendar = new FullCalendar.Calendar(calendarEl,{
 
 initialView:'dayGridMonth',
+
+height:600,
 
 events:events
 
@@ -316,13 +360,21 @@ calendar.render();
 
 function updateStats(){
 
-let today=new Date().toISOString().split("T")[0];
+let today = new Date().toISOString().split("T")[0];
 
-let todayCount=appointments.filter(a=>a.date===today).length;
+let todayCount = appointments.filter(a=>a.date===today).length;
 
-document.getElementById("todayCount").innerText=todayCount;
+document.getElementById("todayCount").innerText = todayCount;
 
-document.getElementById("totalAppointments").innerText=appointments.length;
+document.getElementById("totalAppointments").innerText = appointments.length;
+
+}
+
+/* QR */
+
+function generateQR(id){
+
+QRCode.toCanvas(document.getElementById("qr"), id);
 
 }
 
@@ -330,13 +382,9 @@ document.getElementById("totalAppointments").innerText=appointments.length;
 
 function sendSMS(){
 
-alert("📱 تم إرسال رسالة تذكير للمريض بالموعد");
+alert("📱 تم إرسال تذكير للمريض بالموعد");
 
 }
-
-/* QR */
-
-QRCode.toCanvas(document.getElementById("qr"), "Cardio-Appointment");
 
 /* تشغيل النظام */
 
