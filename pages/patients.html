@@ -6,168 +6,69 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>ملف المريض | نظام مركز القلب</title>
+<title>إدارة المرضى | نظام مركز القلب</title>
+
+<link rel="stylesheet" href="../css/style.css">
 
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700&display=swap" rel="stylesheet">
-
-<style>
-
-body{
-font-family:'Tajawal';
-background:#f4f6f9;
-margin:0;
-}
-
-header{
-background:linear-gradient(135deg,#0d6efd,#001f4d);
-color:white;
-padding:15px;
-text-align:center;
-font-size:22px;
-}
- <nav class="mainNav">
-
-<a href="dashboard.html">
-<i class="fa-solid fa-chart-line"></i>
-لوحة التحكم
-</a>
-
-<a href="patients.html">
-<i class="fa-solid fa-user-injured"></i>
-المرضى
-</a>
-
-<a href="tests.html">
-<i class="fa-solid fa-flask"></i>
-التحاليل
-</a>
-
-<a href="appointments.html">
-<i class="fa-solid fa-calendar-check"></i>
-المواعيد
-</a>
-
-<a href="operations.html">
-<i class="fa-solid fa-heart-pulse"></i>
-العمليات
-</a>
-
-<a href="pharmacy.html">
-<i class="fa-solid fa-pills"></i>
-الصيدلية
-</a>
-
-</nav> 
-
-.container{
-width:95%;
-max-width:1200px;
-margin:auto;
-padding:20px;
-}
-
-.card{
-background:white;
-padding:20px;
-border-radius:12px;
-margin-bottom:20px;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
-}
-
-.card h3{
-color:#0d6efd;
-margin-bottom:15px;
-}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:10px;
-}
-
-input,select{
-padding:10px;
-border-radius:6px;
-border:1px solid #ccc;
-width:100%;
-font-family:'Tajawal';
-}
-
-button{
-background:#0d6efd;
-color:white;
-padding:10px 20px;
-border:none;
-border-radius:8px;
-cursor:pointer;
-margin-top:10px;
-}
-
-button:hover{
-background:#084298;
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-margin-top:10px;
-}
-
-table th,table td{
-border:1px solid #ddd;
-padding:8px;
-text-align:center;
-}
-
-th{
-background:#0d6efd;
-color:white;
-}
-
-.actions button{
-margin:2px;
-padding:6px 10px;
-font-size:12px;
-}
-
-</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
 
 <body>
 
 <header>
-🫀 ملف المريض – نظام مركز القلب
+
+<h2>🫀 نظام مركز القلب</h2>
+
+<div>
+
+<a href="dashboard.html"><i class="fa fa-chart-line"></i> لوحة التحكم</a>
+
+<a href="appointments.html"><i class="fa fa-calendar-check"></i> المواعيد</a>
+
+<a href="tests.html"><i class="fa fa-flask"></i> التحاليل</a>
+
+<a href="pharmacy.html"><i class="fa fa-pills"></i> الصيدلية</a>
+
+<a href="operations.html"><i class="fa fa-heart-pulse"></i> العمليات</a>
+
+<button onclick="logout()">تسجيل خروج</button>
+
+</div>
+
 </header>
 
 <div class="container">
 
-<!-- بيانات المريض -->
+<h2>👨‍⚕️ إدارة المرضى</h2>
+
+<!-- إضافة مريض -->
 
 <div class="card">
 
-<h3>1️⃣ البيانات الأساسية للمريض</h3>
+<h3>➕ تسجيل مريض جديد</h3>
 
 <div class="grid">
 
-<input id="patientId" readonly>
-
-<input id="fullName" placeholder="الاسم الكامل">
+<input id="name" placeholder="الاسم الكامل">
 
 <input id="nationalId" placeholder="الرقم الوطني">
 
-<input id="age" type="number" placeholder="العمر">
+<input id="age" placeholder="العمر">
 
 <select id="gender">
+
 <option value="">الجنس</option>
 <option>ذكر</option>
 <option>أنثى</option>
+
 </select>
 
 <select id="bloodType">
+
 <option value="">فصيلة الدم</option>
 <option>A+</option>
 <option>A-</option>
@@ -176,101 +77,28 @@ font-size:12px;
 <option>AB+</option>
 <option>O+</option>
 <option>O-</option>
+
 </select>
 
-</div>
+<input id="phone" placeholder="رقم الهاتف">
 
-</div>
-
-<!-- التاريخ المرضي -->
-
-<div class="card">
-
-<h3>2️⃣ التاريخ المرضي</h3>
-
-<div class="grid">
-
-<input id="diagnosis" placeholder="التشخيص (CAD / MI)">
-
-<select id="hypertension">
-<option value="">ضغط الدم</option>
-<option>نعم</option>
-<option>لا</option>
-</select>
-
-<select id="diabetes">
-<option value="">السكري</option>
-<option>نعم</option>
-<option>لا</option>
-</select>
-
-<select id="cholesterol">
-<option value="">ارتفاع الكوليسترول</option>
-<option>نعم</option>
-<option>لا</option>
-</select>
-
-<select id="smoking">
-<option value="">التدخين</option>
-<option>نعم</option>
-<option>لا</option>
-</select>
-
-<select id="familyHistory">
-<option value="">تاريخ عائلي</option>
-<option>نعم</option>
-<option>لا</option>
-</select>
-
-</div>
-
-</div>
-
-<!-- الفحوصات -->
-
-<div class="card">
-
-<h3>3️⃣ الفحوصات</h3>
-
-<div class="grid">
+<input id="diagnosis" placeholder="تشخيص القلب">
 
 <input id="bloodPressure" placeholder="ضغط الدم">
 
-<input id="heartRate" placeholder="Heart Rate">
+</div>
 
-<input id="hdl" placeholder="HDL">
+<button class="addBtn" onclick="addPatient()">
 
-<input id="ldl" placeholder="LDL">
+💾 حفظ المريض
 
-<input id="triglycerides" placeholder="Triglycerides">
-
-<input id="fbs" placeholder="FBS">
-
-<input id="hba1c" placeholder="HbA1c">
-
-<input id="ecg" placeholder="نتيجة ECG">
+</button>
 
 </div>
 
-</div>
+<!-- البحث -->
 
-<!-- العلاج -->
-
-<div class="card">
-
-<h3>4️⃣ العلاج</h3>
-
-<div class="grid">
-
-<input id="medications" placeholder="الأدوية">
-
-<input id="procedures" placeholder="الإجراءات (Angioplasty / CABG)">
-
-</div>
-
-<button onclick="savePatient()">💾 حفظ المريض</button>
-
-</div>
+<input id="search" placeholder="🔍 بحث عن مريض..." onkeyup="searchPatient()">
 
 <!-- جدول المرضى -->
 
@@ -281,15 +109,20 @@ font-size:12px;
 <table>
 
 <thead>
+
 <tr>
-<th>رقم المريض</th>
+
+<th>الرقم</th>
 <th>الاسم</th>
 <th>العمر</th>
+<th>الجنس</th>
+<th>فصيلة الدم</th>
 <th>التشخيص</th>
-<th>ضغط الدم</th>
-<th>الإجراءات</th>
-<th>العمليات</th>
+<th>عرض الملف</th>
+<th>حذف</th>
+
 </tr>
+
 </thead>
 
 <tbody id="patientsTable"></tbody>
@@ -298,130 +131,23 @@ font-size:12px;
 
 </div>
 
+
+<!-- الملف الطبي -->
+
+<div class="card" id="patientProfile" style="display:none">
+
+<h3>🧾 الملف الطبي للمريض</h3>
+
+<div id="profileContent"></div>
+
+<canvas id="patientChart"></canvas>
+
 </div>
 
-<script>
+</div>
 
-let patients = JSON.parse(localStorage.getItem("patients")) || [];
-
-function generatePatientId(){
-
-return "P-" + Date.now();
-
-}
-
-document.getElementById("patientId").value = generatePatientId();
-
-function savePatient(){
-
-let nationalId = document.getElementById("nationalId").value;
-
-let exists = patients.find(p => p.nationalId === nationalId);
-
-if(exists){
-
-alert("هذا المريض مسجل مسبقاً");
-
-return;
-
-}
-
-let patient = {
-
-id:document.getElementById("patientId").value,
-name:document.getElementById("fullName").value,
-nationalId:nationalId,
-age:document.getElementById("age").value,
-gender:document.getElementById("gender").value,
-bloodType:document.getElementById("bloodType").value,
-
-diagnosis:document.getElementById("diagnosis").value,
-hypertension:document.getElementById("hypertension").value,
-diabetes:document.getElementById("diabetes").value,
-cholesterol:document.getElementById("cholesterol").value,
-smoking:document.getElementById("smoking").value,
-familyHistory:document.getElementById("familyHistory").value,
-
-bloodPressure:document.getElementById("bloodPressure").value,
-heartRate:document.getElementById("heartRate").value,
-hdl:document.getElementById("hdl").value,
-ldl:document.getElementById("ldl").value,
-
-medications:document.getElementById("medications").value,
-procedures:document.getElementById("procedures").value
-
-};
-
-patients.push(patient);
-
-localStorage.setItem("patients", JSON.stringify(patients));
-
-alert("تم حفظ المريض");
-
-displayPatients();
-
-clearForm();
-
-}
-
-function displayPatients(){
-
-let table = document.getElementById("patientsTable");
-
-table.innerHTML="";
-
-patients.forEach((p,index)=>{
-
-table.innerHTML += `
-
-<tr>
-
-<td>${p.id}</td>
-<td>${p.name}</td>
-<td>${p.age}</td>
-<td>${p.diagnosis}</td>
-<td>${p.bloodPressure}</td>
-<td>${p.procedures}</td>
-
-<td class="actions">
-
-<button onclick="deletePatient(${index})">🗑 حذف</button>
-
-</td>
-
-</tr>
-
-`;
-
-});
-
-}
-
-function deletePatient(index){
-
-if(confirm("حذف المريض؟")){
-
-patients.splice(index,1);
-
-localStorage.setItem("patients", JSON.stringify(patients));
-
-displayPatients();
-
-}
-
-}
-
-function clearForm(){
-
-document.querySelectorAll("input").forEach(i=>i.value="");
-
-document.getElementById("patientId").value = generatePatientId();
-
-}
-
-displayPatients();
-
-</script>
+<script src="../js/patients.js"></script>
 
 </body>
+
 </html>
