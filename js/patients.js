@@ -1,103 +1,92 @@
-/* ===== حماية الصفحة ===== */
+let patients = JSON.parse(localStorage.getItem("patients")) || [];
 
-if(localStorage.getItem("loggedIn") !== "true"){
-    window.location.href = "../index.html";
+/* توليد رقم مريض */
+
+function generateId(){
+
+return "PT-" + Math.floor(Math.random()*100000);
+
 }
 
 
-/* ===== جلب المرضى ===== */
-
-let patients = JSON.parse(localStorage.getItem("patients")) || [];
-
-let editIndex = -1;
-
-
-/* ===== إضافة أو تعديل مريض ===== */
+/* إضافة مريض */
 
 function addPatient(){
 
-let name = document.getElementById("name").value.trim();
-let age = document.getElementById("age").value;
-let gender = document.getElementById("gender").value;
-let phone = document.getElementById("phone").value.trim();
-
-if(!name || !age || !phone){
-
-alert("يرجى تعبئة جميع الحقول");
-
-return;
-
-}
-
 let patient = {
 
-name:name,
-age:age,
-gender:gender,
-phone:phone
+id: generateId(),
+
+name: document.getElementById("name").value,
+
+nationalId: document.getElementById("nationalId").value,
+
+age: document.getElementById("age").value,
+
+gender: document.getElementById("gender").value,
+
+bloodType: document.getElementById("bloodType").value,
+
+phone: document.getElementById("phone").value,
+
+diagnosis: document.getElementById("diagnosis").value,
+
+bloodPressure: document.getElementById("bloodPressure").value
 
 };
 
-
-/* ===== تعديل ===== */
-
-if(editIndex > -1){
-
-patients[editIndex] = patient;
-
-editIndex = -1;
-
-}
-
-/* ===== إضافة ===== */
-
-else{
-
 patients.push(patient);
-
-}
 
 localStorage.setItem("patients", JSON.stringify(patients));
 
-displayPatients();
-
-clearForm();
+loadPatients();
 
 }
 
 
-/* ===== عرض المرضى ===== */
+/* عرض المرضى */
 
-function displayPatients(){
+function loadPatients(){
 
-patients = JSON.parse(localStorage.getItem("patients")) || [];
+let table = document.getElementById("patientsTable");
 
-let table = document.querySelector("#patientsTable");
+table.innerHTML = "";
 
-table.innerHTML="";
-
-patients.forEach((p,i)=>{
+patients.forEach((p,index)=>{
 
 table.innerHTML += `
 
 <tr>
 
+<td>${p.id}</td>
+
 <td>${p.name}</td>
+
 <td>${p.age}</td>
+
 <td>${p.gender}</td>
-<td>${p.phone}</td>
+
+<td>${p.bloodType}</td>
+
+<td>${p.diagnosis}</td>
 
 <td>
 
-<button onclick="editPatient(${i})">
+<button onclick="viewPatient(${index})">
 
-✏
+📄 عرض
 
 </button>
 
-<button onclick="deletePatient(${i})" class="deleteBtn">
+</td>
 
-🗑
+<td>
+
+<button class="deleteBtn"
+
+onclick="deletePatient(${index})">
+
+❌
 
 </button>
 
@@ -112,7 +101,7 @@ table.innerHTML += `
 }
 
 
-/* ===== حذف مريض ===== */
+/* حذف مريض */
 
 function deletePatient(index){
 
@@ -122,50 +111,92 @@ patients.splice(index,1);
 
 localStorage.setItem("patients", JSON.stringify(patients));
 
-displayPatients();
+loadPatients();
 
 }
 
 }
 
 
-/* ===== تعديل مريض ===== */
-
-function editPatient(index){
-
-let p = patients[index];
-
-document.getElementById("name").value = p.name;
-document.getElementById("age").value = p.age;
-document.getElementById("gender").value = p.gender;
-document.getElementById("phone").value = p.phone;
-
-editIndex = index;
-
-}
-
-
-/* ===== البحث ===== */
+/* البحث عن مريض */
 
 function searchPatient(){
 
-let search = document.getElementById("search").value.toLowerCase();
+let value = document.getElementById("search").value.toLowerCase();
 
 let rows = document.querySelectorAll("#patientsTable tr");
 
 rows.forEach(row=>{
 
-let name = row.children[0].innerText.toLowerCase();
+row.style.display = row.innerText.toLowerCase().includes(value) ? "" : "none";
 
-if(name.includes(search)){
-
-row.style.display="";
+});
 
 }
 
-else{
 
-row.style.display="none";
+/* عرض الملف الطبي */
+
+function viewPatient(index){
+
+let p = patients[index];
+
+document.getElementById("patientProfile").style.display = "block";
+
+document.getElementById("profileContent").innerHTML = `
+
+<p><b>الاسم:</b> ${p.name}</p>
+
+<p><b>العمر:</b> ${p.age}</p>
+
+<p><b>فصيلة الدم:</b> ${p.bloodType}</p>
+
+<p><b>التشخيص:</b> ${p.diagnosis}</p>
+
+<p><b>ضغط الدم:</b> ${p.bloodPressure}</p>
+
+`;
+
+
+/* رسم بياني لحالة المريض */
+
+let ctx = document.getElementById("patientChart");
+
+new Chart(ctx, {
+
+type: "line",
+
+data: {
+
+labels: ["يناير","فبراير","مارس","أبريل"],
+
+datasets: [{
+
+label: "ضغط الدم",
+
+data: [120,130,140,135],
+
+borderWidth: 2,
+
+tension: 0.4
+
+}]
+
+},
+
+options: {
+
+responsive: true,
+
+plugins: {
+
+legend: {
+
+display: true
+
+}
+
+}
 
 }
 
@@ -174,29 +205,6 @@ row.style.display="none";
 }
 
 
-/* ===== تنظيف الحقول ===== */
+/* تحميل المرضى عند فتح الصفحة */
 
-function clearForm(){
-
-document.getElementById("name").value="";
-document.getElementById("age").value="";
-document.getElementById("phone").value="";
-document.getElementById("gender").value="ذكر";
-
-}
-
-
-/* ===== تسجيل خروج ===== */
-
-function logout(){
-
-localStorage.removeItem("loggedIn");
-
-window.location.href="../index.html";
-
-}
-
-
-/* ===== تحميل المرضى ===== */
-
-displayPatients();
+loadPatients();
