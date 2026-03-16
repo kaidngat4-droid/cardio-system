@@ -225,3 +225,18 @@ localStorage.removeItem("loggedIn");
 window.location.href="../index.html";
 
 }
+let patients = JSON.parse(localStorage.getItem("patients")) || [];
+let appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+
+function addAppointment(patientIndex, date, time, service, doctor, location){
+    if(patientIndex === "") return alert("اختر المريض");
+    let patient = patients[patientIndex];
+
+    let appointment = { patient: patient.name, date, time, service, doctor, location };
+    appointments.push(appointment);
+    localStorage.setItem("appointments", JSON.stringify(appointments));
+
+    alertNewAppointment(patient.name, date, time);
+    loadCalendar();
+    updateStats();
+}
