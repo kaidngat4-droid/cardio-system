@@ -6,167 +6,49 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>تحاليل المريض - نظام مركز القلب</title>
+<title>تحاليل القلب | نظام مركز القلب</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
 
-body{
-font-family:'Tajawal',sans-serif;
-margin:0;
-background:#f5f7fb;
+.sectionTitle{
+
+font-size:20px;
+margin:20px 0;
+color:#0d6efd;
+
 }
 
-/* الهيدر */
+.grid{
 
-header{
-background:linear-gradient(135deg,#0d6efd,#001f4d);
-color:white;
-text-align:center;
-padding:20px;
-font-size:22px;
-}
-
-/* الحاوية */
-
-.container{
-max-width:1100px;
-margin:auto;
-padding:20px;
-}
-
-/* الكروت */
-
-.card{
-background:white;
-padding:20px;
-border-radius:12px;
-box-shadow:0 4px 15px rgba(0,0,0,0.1);
-margin-bottom:20px;
-}
-
-/* بيانات المريض */
-
-.patientGrid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-gap:15px;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:10px;
+
 }
 
-.patientItem{
-background:#f1f4f9;
-padding:12px;
-border-radius:8px;
-}
+.alert{
 
-/* ملخص الحالة */
+background:#ffdddd;
+padding:10px;
+border-radius:6px;
+color:#a10000;
+margin-top:10px;
 
-.summaryGrid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-gap:15px;
-}
-
-.summaryCard{
-background:white;
-border-radius:12px;
-padding:15px;
-text-align:center;
-box-shadow:0 4px 15px rgba(0,0,0,0.08);
-}
-
-.labName{
-font-weight:bold;
-color:#444;
-}
-
-.labValue{
-font-size:22px;
-margin:10px 0;
-font-weight:bold;
-}
-
-.labStatus{
-font-size:13px;
-padding:4px 10px;
-border-radius:20px;
-display:inline-block;
 }
 
 .normal{
-background:#e8f7ec;
-color:#1a7f37;
-}
 
-.high{
-background:#fdeaea;
-color:#d93025;
-}
-
-/* الجداول */
-
-table{
-width:100%;
-border-collapse:collapse;
-}
-
-th{
-background:#0d6efd;
-color:white;
+background:#ddffdd;
 padding:10px;
-}
+border-radius:6px;
 
-td{
-padding:10px;
-border-bottom:1px solid #eee;
-}
-
-/* ECG */
-
-.ecgMonitor{
-height:100px;
-background:#000;
-border-radius:8px;
-overflow:hidden;
-position:relative;
-}
-
-.ecgLine{
-position:absolute;
-width:3px;
-height:100%;
-background:#00ff00;
-left:0;
-animation:ecgMove 1s linear infinite;
-}
-
-@keyframes ecgMove{
-0%{left:0}
-100%{left:100%}
-}
-
-/* تقييم المخاطر */
-
-.riskCard{
-background:#fff3cd;
-border-right:6px solid #ffc107;
-padding:15px;
-border-radius:10px;
-}
-
-/* زر الطباعة */
-
-.printBtn{
-background:#0d6efd;
-color:white;
-border:none;
-padding:12px 20px;
-border-radius:8px;
-cursor:pointer;
-margin-top:10px;
 }
 
 </style>
@@ -176,314 +58,105 @@ margin-top:10px;
 <body>
 
 <header>
-🧪 تحاليل المريض - نظام مركز القلب
+
+<h2>🧪 تحاليل القلب</h2>
+
+<div>
+
+<a href="dashboard.html">لوحة التحكم</a>
+<a href="patients.html">المرضى</a>
+<a href="appointments.html">المواعيد</a>
+
+</div>
+
 </header>
 
 <div class="container">
 
-<!-- بيانات المريض -->
+<h2>🧾 بيانات المريض</h2>
+
+<div id="patientInfo"></div>
 
 <div class="card">
 
-<h3>👤 بيانات المريض</h3>
+<h3 class="sectionTitle">
+🫀 مؤشرات القلب (Cardiac Markers)
+</h3>
 
-<div class="patientGrid">
+<div class="grid">
 
-<div class="patientItem">
-الاسم: <span id="pName"></span>
-</div>
+<input id="troponin" placeholder="Troponin I (ng/ml)">
+<input id="ckmb" placeholder="CK-MB">
+<input id="bnp" placeholder="BNP">
+<input id="myoglobin" placeholder="Myoglobin">
 
-<div class="patientItem">
-العمر: <span id="pAge"></span>
-</div>
-
-<div class="patientItem">
-الجنس: <span id="pGender"></span>
-</div>
-
-<div class="patientItem">
-رقم المريض: <span id="pId"></span>
 </div>
 
 </div>
 
-<p>آخر تحديث: <span id="lastUpdate"></span></p>
-
-</div>
-
-<!-- ملخص الحالة -->
 
 <div class="card">
 
-<h3>📊 ملخص الحالة</h3>
+<h3 class="sectionTitle">
+🩸 الدهون (Lipid Profile)
+</h3>
 
-<div class="summaryGrid">
+<div class="grid">
 
-<div class="summaryCard">
+<input id="cholesterol" placeholder="Total Cholesterol">
 
-<div class="labName">Troponin</div>
+<input id="hdl" placeholder="HDL">
 
-<div id="troponinValue" class="labValue"></div>
+<input id="ldl" placeholder="LDL">
 
-<div id="troponinStatus" class="labStatus"></div>
-
-</div>
-
-<div class="summaryCard">
-
-<div class="labName">الكوليسترول</div>
-
-<div id="cholesterolValue" class="labValue"></div>
-
-<div id="cholesterolStatus" class="labStatus"></div>
-
-</div>
-
-<div class="summaryCard">
-
-<div class="labName">Creatinine</div>
-
-<div id="creatinineValue" class="labValue"></div>
-
-<div id="creatinineStatus" class="labStatus"></div>
+<input id="triglycerides" placeholder="Triglycerides">
 
 </div>
 
 </div>
 
-</div>
-
-<!-- تقييم المخاطر -->
-
-<div class="riskCard">
-
-<h3>⚠️ تقييم مخاطر القلب</h3>
-
-<p id="riskResult"></p>
-
-</div>
-
-<!-- ECG -->
 
 <div class="card">
 
-<h3>🫀 تخطيط القلب</h3>
+<h3 class="sectionTitle">
+🧬 وظائف الأعضاء
+</h3>
 
-<div class="ecgMonitor">
-<div class="ecgLine"></div>
-</div>
+<div class="grid">
 
-</div>
+<input id="creatinine" placeholder="Creatinine">
 
-<!-- أنزيمات القلب -->
+<input id="urea" placeholder="Urea">
 
-<div class="card">
+<input id="alt" placeholder="ALT">
 
-<h3>🫀 أنزيمات القلب</h3>
-
-<table>
-
-<tr>
-<th>التحليل</th>
-<th>النتيجة</th>
-<th>المعدل الطبيعي</th>
-</tr>
-
-<tr>
-<td>Troponin</td>
-<td id="troponin"></td>
-<td>0 - 0.04</td>
-</tr>
-
-<tr>
-<td>CK-MB</td>
-<td id="ckmb"></td>
-<td>0 - 25</td>
-</tr>
-
-<tr>
-<td>BNP</td>
-<td id="bnp"></td>
-<td>0 - 100</td>
-</tr>
-
-</table>
+<input id="ast" placeholder="AST">
 
 </div>
 
-<!-- الدهون -->
-
-<div class="card">
-
-<h3>🧬 بروفايل الدهون</h3>
-
-<table>
-
-<tr>
-<th>التحليل</th>
-<th>النتيجة</th>
-<th>الطبيعي</th>
-</tr>
-
-<tr>
-<td>الكوليسترول</td>
-<td id="cholesterol"></td>
-<td>< 200</td>
-</tr>
-
-<tr>
-<td>HDL</td>
-<td id="hdl"></td>
-<td>> 40</td>
-</tr>
-
-<tr>
-<td>LDL</td>
-<td id="ldl"></td>
-<td>< 100</td>
-</tr>
-
-</table>
-
 </div>
 
-<!-- وظائف الكلى -->
+<button class="addBtn" onclick="saveTest()">
 
-<div class="card">
+💾 حفظ التحليل
 
-<h3>🧪 وظائف الكلى</h3>
-
-<table>
-
-<tr>
-<th>التحليل</th>
-<th>النتيجة</th>
-<th>الطبيعي</th>
-</tr>
-
-<tr>
-<td>Creatinine</td>
-<td id="creatinine"></td>
-<td>0.7 - 1.3</td>
-</tr>
-
-<tr>
-<td>Urea</td>
-<td id="urea"></td>
-<td>15 - 45</td>
-</tr>
-
-</table>
-
-</div>
-
-<!-- الرسم البياني -->
-
-<div class="card">
-
-<h3>📈 تطور التحاليل</h3>
-
-<canvas id="chart"></canvas>
-
-</div>
-
-<button onclick="window.print()" class="printBtn">
-🖨 طباعة التقرير الطبي
 </button>
 
+
+<div id="medicalAlert"></div>
+
+<div class="card">
+
+<h3>📊 تطور التحاليل</h3>
+
+<canvas id="testChart"></canvas>
+
 </div>
 
-<script>
+</div>
 
-/* مثال بيانات */
-
-let troponin = 0.06
-let cholesterol = 230
-let creatinine = 1.4
-
-/* عرض القيم */
-
-document.getElementById("troponin").innerText = troponin
-document.getElementById("cholesterol").innerText = cholesterol
-document.getElementById("creatinine").innerText = creatinine
-
-document.getElementById("troponinValue").innerText = troponin
-document.getElementById("cholesterolValue").innerText = cholesterol
-document.getElementById("creatinineValue").innerText = creatinine
-
-/* الحالة */
-
-function setStatus(value,limit,id){
-
-let el = document.getElementById(id)
-
-if(value>limit){
-
-el.innerText="مرتفع"
-el.className="labStatus high"
-
-}else{
-
-el.innerText="طبيعي"
-el.className="labStatus normal"
-
-}
-
-}
-
-setStatus(troponin,0.04,"troponinStatus")
-setStatus(cholesterol,200,"cholesterolStatus")
-setStatus(creatinine,1.3,"creatinineStatus")
-
-/* تقييم المخاطر */
-
-let risk="منخفض"
-
-if(troponin>0.04 || cholesterol>240){
-
-risk="مرتفع"
-
-}
-
-document.getElementById("riskResult").innerText =
-"مستوى خطر الإصابة بمشكلة قلبية: "+risk
-
-/* التاريخ */
-
-document.getElementById("lastUpdate").innerText =
-new Date().toLocaleString("ar")
-
-/* الرسم البياني */
-
-new Chart(document.getElementById("chart"),{
-
-type:"line",
-
-data:{
-
-labels:["Day1","Day2","Day3","Day4"],
-
-datasets:[
-
-{
-label:"Troponin",
-data:[0.02,0.04,0.05,0.06],
-borderColor:"red"
-},
-
-{
-label:"Cholesterol",
-data:[190,200,220,230],
-borderColor:"blue"
-}
-
-]
-
-}
-
-})
-
-</script>
+<script src="../js/tests.js"></script>
 
 </body>
+
 </html>
