@@ -6,132 +6,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>لوحة التحكم | مركز القلب</title>
+<title>لوحة التحكم | نظام مركز القلب</title>
+
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/dashboard.css">
 
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script>
-
-/* حماية الصفحة */
-
-if(localStorage.getItem("loggedIn") !== "true"){
-window.location.href="../index.html";
-}
-
-</script>
-
-<style>
-
-body{
-font-family:Tajawal;
-margin:0;
-background:#f4f6f9;
-}
-
-/* ===== الهيدر ===== */
-
-header{
-
-background:linear-gradient(135deg,#0d6efd,#001f4d);
-color:white;
-padding:15px 20px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-
-}
-
-header h2{
-margin:0;
-font-size:22px;
-}
-
-.headerBtns button{
-
-background:white;
-border:none;
-padding:8px 14px;
-border-radius:6px;
-cursor:pointer;
-font-weight:bold;
-color:#0d6efd;
-
-}
-
-/* ===== لوحة التحكم ===== */
-
-.dashboard{
-
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px;
-padding:25px;
-
-}
-
-.card{
-
-background:white;
-border-radius:15px;
-padding:20px;
-text-align:center;
-box-shadow:0 10px 25px rgba(0,0,0,0.1);
-transition:0.3s;
-
-}
-
-.card:hover{
-transform:translateY(-5px);
-}
-
-.card i{
-
-font-size:35px;
-color:#0d6efd;
-margin-bottom:10px;
-
-}
-
-.card h3{
-margin:10px 0;
-}
-
-.card p{
-
-font-size:28px;
-font-weight:bold;
-
-}
-
-.card a{
-
-display:inline-block;
-margin-top:10px;
-background:#0d6efd;
-color:white;
-padding:6px 12px;
-border-radius:6px;
-text-decoration:none;
-
-}
-
-/* ===== الرسم البياني ===== */
-
-.chartBox{
-
-width:90%;
-margin:auto;
-background:white;
-padding:20px;
-border-radius:15px;
-box-shadow:0 10px 25px rgba(0,0,0,0.1);
-
-}
-
-</style>
 
 </head>
 
@@ -139,164 +22,263 @@ box-shadow:0 10px 25px rgba(0,0,0,0.1);
 
 <header>
 
-<h2>
-<i class="fa-solid fa-heart-pulse"></i>
-نظام إدارة مركز القلب
-</h2>
+<h2>🫀 نظام مركز القلب</h2>
 
-<div class="headerBtns">
+<div>
 
-<button onclick="logout()">
+<a href="patients.html"><i class="fa fa-user-injured"></i> المرضى</a>
 
-<i class="fa-solid fa-right-from-bracket"></i>
-تسجيل خروج
+<a href="appointments.html"><i class="fa fa-calendar-check"></i> المواعيد</a>
 
-</button>
+<a href="tests.html"><i class="fa fa-flask"></i> التحاليل</a>
+
+<a href="operations.html"><i class="fa fa-heart-pulse"></i> العمليات</a>
+
+<a href="pharmacy.html"><i class="fa fa-pills"></i> الصيدلية</a>
+
+<a href="reports.html"><i class="fa fa-chart-line"></i> التقارير</a>
+
+<button onclick="logout()">تسجيل خروج</button>
 
 </div>
 
 </header>
 
+<div class="container">
 
-<!-- ===== الكروت ===== -->
+<h2>📊 لوحة التحكم الطبية</h2>
 
 <div class="dashboard">
 
 <div class="card">
 
-<i class="fa-solid fa-user-injured"></i>
-
-<h3>عدد المرضى</h3>
+<h3><i class="fa fa-user-injured icon3d"></i> المرضى</h3>
 
 <p id="patientsCount">0</p>
 
-<a href="patients.html">
-عرض المرضى
-</a>
-
 </div>
-
 
 <div class="card">
 
-<i class="fa-solid fa-calendar-check"></i>
+<h3><i class="fa fa-calendar-check icon3d"></i> مواعيد اليوم</h3>
 
-<h3>المواعيد</h3>
-
-<p id="appointmentsCount">0</p>
-
-<a href="appointments.html">
-إدارة المواعيد
-</a>
+<p id="todayAppointments">0</p>
 
 </div>
-
 
 <div class="card">
 
-<i class="fa-solid fa-pills"></i>
+<h3><i class="fa fa-flask icon3d"></i> التحاليل</h3>
 
-<h3>الأدوية</h3>
-
-<p id="medicineCount">0</p>
-
-<a href="pharmacy.html">
-الصيدلية
-</a>
+<p id="testsCount">0</p>
 
 </div>
-
 
 <div class="card">
 
-<i class="fa-solid fa-truck-medical"></i>
+<h3><i class="fa fa-heart-pulse icon3d"></i> العمليات</h3>
 
-<h3>الطوارئ</h3>
+<p id="operationsCount">0</p>
 
-<p>1</p>
+</div>
 
-<a href="reports.html">
-التقارير
-</a>
+<div class="card">
+
+<h3><i class="fa fa-pills icon3d"></i> الأدوية المصروفة</h3>
+
+<p id="pharmacyCount">0</p>
 
 </div>
 
 </div>
 
 
-<!-- ===== الرسم البياني ===== -->
+<!-- الرسوم البيانية -->
+
+<div class="charts">
 
 <div class="chartBox">
 
-<canvas id="statsChart"></canvas>
+<h3>📈 عدد المرضى شهرياً</h3>
+
+<canvas id="patientsChart"></canvas>
+
+</div>
+
+<div class="chartBox">
+
+<h3>🫀 أمراض القلب</h3>
+
+<canvas id="diseaseChart"></canvas>
+
+</div>
 
 </div>
 
 
+<!-- آخر المرضى -->
+
+<div class="recent">
+
+<h3>🧾 آخر المرضى المسجلين</h3>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>الرقم</th>
+
+<th>الاسم</th>
+
+<th>العمر</th>
+
+<th>التشخيص</th>
+
+</tr>
+
+</thead>
+
+<tbody id="recentPatients"></tbody>
+
+</table>
+
+</div>
+
+
+<!-- التنبيهات -->
+
+<div class="alerts">
+
+<h3>⚠ التنبيهات الطبية</h3>
+
+<ul id="alertsList"></ul>
+
+</div>
+
+</div>
+
+<script src="../js/app.js"></script>
+
 <script>
 
-/* البيانات */
-
 let patients = JSON.parse(localStorage.getItem("patients")) || [];
+
 let appointments = JSON.parse(localStorage.getItem("appointments")) || [];
-let medicines = JSON.parse(localStorage.getItem("medicines")) || [];
+
+let tests = JSON.parse(localStorage.getItem("tests")) || [];
+
+let operations = JSON.parse(localStorage.getItem("operations")) || [];
+
+let pharmacy = JSON.parse(localStorage.getItem("pharmacy")) || [];
 
 
-/* عرض الأعداد */
+/* الإحصائيات */
 
 document.getElementById("patientsCount").innerText = patients.length;
-document.getElementById("appointmentsCount").innerText = appointments.length;
-document.getElementById("medicineCount").innerText = medicines.length;
+
+document.getElementById("testsCount").innerText = tests.length;
+
+document.getElementById("operationsCount").innerText = operations.length;
+
+document.getElementById("pharmacyCount").innerText = pharmacy.length;
 
 
-/* الرسم البياني */
+/* مواعيد اليوم */
 
-const ctx = document.getElementById('statsChart');
+let today = new Date().toISOString().split("T")[0];
 
-new Chart(ctx, {
+let todayCount = appointments.filter(a => a.date === today).length;
 
-type: 'bar',
+document.getElementById("todayAppointments").innerText = todayCount;
 
-data: {
 
-labels: ['المرضى','المواعيد','الأدوية'],
+/* آخر المرضى */
 
-datasets: [{
+let table = document.getElementById("recentPatients");
 
-label: 'إحصائيات مركز القلب',
+patients.slice(-5).reverse().forEach(p => {
 
-data: [patients.length,appointments.length,medicines.length],
+table.innerHTML += `
 
-borderWidth:1
+<tr>
 
-}]
+<td>${p.id}</td>
 
-},
+<td>${p.name}</td>
 
-options:{
+<td>${p.age}</td>
 
-responsive:true,
+<td>${p.diagnosis}</td>
 
-plugins:{
-legend:{display:false}
-}
+</tr>
+
+`;
+
+});
+
+
+/* التنبيهات */
+
+let alerts = document.getElementById("alertsList");
+
+patients.forEach(p => {
+
+if(p.bloodPressure > 160){
+
+alerts.innerHTML += `<li>⚠ ضغط مرتفع للمريض ${p.name}</li>`;
 
 }
 
 });
 
 
-/* تسجيل خروج */
+/* رسم بياني المرضى */
 
-function logout(){
+new Chart(document.getElementById("patientsChart"), {
 
-localStorage.removeItem("loggedIn");
+type: "bar",
 
-window.location.href="../index.html";
+data: {
+
+labels:["يناير","فبراير","مارس","أبريل","مايو","يونيو"],
+
+datasets:[{
+
+label:"المرضى",
+
+data:[5,8,6,9,12,10]
+
+}]
 
 }
+
+});
+
+
+/* أمراض القلب */
+
+new Chart(document.getElementById("diseaseChart"), {
+
+type:"pie",
+
+data:{
+
+labels:["تصلب الشرايين","جلطة قلبية","عدم انتظام ضربات القلب","ضغط الدم"],
+
+datasets:[{
+
+data:[30,20,15,35]
+
+}]
+
+}
+
+});
 
 </script>
 
 </body>
+
 </html>
