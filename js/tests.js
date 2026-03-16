@@ -119,3 +119,17 @@ data:[0.1,0.2,0.5,0.3]
 }
 
 drawChart();
+let tests = JSON.parse(localStorage.getItem("tests")) || [];
+
+function addTest(patientIndex, testName, value, threshold){
+    if(patientIndex === "") return alert("اختر المريض");
+    let patient = patients[patientIndex];
+
+    let test = { patient: patient.name, testName, value };
+    tests.push(test);
+    localStorage.setItem("tests", JSON.stringify(tests));
+
+    if(value > threshold){
+        alertCriticalTest(patient.name, testName, value);
+    }
+}
