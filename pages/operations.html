@@ -1,194 +1,169 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>إدارة العمليات | نظام مركز القلب</title>
+
+<title>العمليات القلبية | نظام مركز القلب</title>
 
 <link rel="stylesheet" href="../css/style.css">
 
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
-/* الحاوية */
-.container {
-    width: 95%;
-    max-width: 1200px;
-    margin: 30px auto;
-    background: #ffffff;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:10px;
 }
 
-/* العناوين */
-.container h2 {
-    color: #0d6efd;
-    margin-bottom: 15px;
+.success{
+background:#e7ffe7;
+padding:10px;
+border-radius:6px;
 }
 
-/* الحقول */
-.container input, 
-.container select {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0 15px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    font-size: 14px;
+.danger{
+background:#ffe7e7;
+padding:10px;
+border-radius:6px;
 }
 
-/* الأزرار */
-.save-btn {
-    background: linear-gradient(135deg,#0d6efd,#084298);
-    color: white;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-top: 5px;
-}
-
-.save-btn:hover {
-    background: linear-gradient(135deg,#084298,#0d6efd);
-}
-
-.delete-btn {
-    background: #dc3545;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-/* الجدول */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-th, td {
-    border: 1px solid #dee2e6;
-    padding: 10px;
-    text-align: center;
-}
-
-th {
-    background: #0d6efd;
-    color: white;
-}
-
-tr:nth-child(even) {
-    background: #f8f9fa;
-}
 </style>
+
 </head>
+
 <body>
 
-<header style="background:linear-gradient(135deg,#0d6efd,#001f4d);color:white;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;">
-    <h2>🫀 نظام مركز القلب</h2>
-    <div>
-        <a href="../dashboard.html" style="color:white;margin-right:10px;text-decoration:none;">لوحة التحكم</a>
-        <button onclick="logout()" style="background:#dc3545;color:white;padding:8px 12px;border:none;border-radius:6px;cursor:pointer;">تسجيل خروج</button>
-    </div>
+<header>
+
+<h2>🫀 نظام العمليات القلبية</h2>
+
+<div>
+
+<a href="dashboard.html">لوحة التحكم</a>
+
+<a href="patients.html">المرضى</a>
+
+<a href="tests.html">التحاليل</a>
+
+<a href="appointments.html">المواعيد</a>
+
+</div>
+
 </header>
 
 <div class="container">
-    <h2>إضافة عملية جديدة</h2>
-    <input type="text" id="patientName" placeholder="اسم المريض">
-    <input type="date" id="operationDate" placeholder="تاريخ العملية">
-    <select id="operationType">
-        <option>قسطرة قلب</option>
-        <option>عملية قلب مفتوح</option>
-        <option>تحويلة شريانية</option>
-        <option>تفتيت حصى القلب</option>
-    </select>
-    <button class="save-btn" onclick="addOperation()">إضافة العملية</button>
+
+<h2>➕ تسجيل عملية قلبية</h2>
+
+<div class="card">
+
+<div class="grid">
+
+<select id="patientSelect"></select>
+
+<select id="operationType">
+
+<option>Angioplasty</option>
+
+<option>CABG Surgery</option>
+
+<option>Pacemaker Implant</option>
+
+<option>Valve Replacement</option>
+
+<option>Cardiac Catheterization</option>
+
+</select>
+
+<input id="operationDate" type="date">
+
+<input id="surgeon" placeholder="الجراح">
+
+<input id="anesthesia" placeholder="طبيب التخدير">
+
+<input id="assistant" placeholder="مساعد الجراح">
+
+<input id="nurse" placeholder="الممرضة">
+
 </div>
 
-<div class="container">
-    <h2>قائمة العمليات</h2>
-    <table id="operationsTable">
-        <thead>
-            <tr>
-                <th>اسم المريض</th>
-                <th>تاريخ العملية</th>
-                <th>نوع العملية</th>
-                <th>حذف</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- العمليات ستظهر هنا -->
-        </tbody>
-    </table>
+<button class="addBtn" onclick="addOperation()">
+
+💾 تسجيل العملية
+
+</button>
+
 </div>
 
-<script>
-// جلب العمليات من التخزين المحلي أو إنشاء مصفوفة جديدة
-let operations = JSON.parse(localStorage.getItem("operations")) || [];
 
-// إضافة عملية جديدة
-function addOperation() {
-    const name = document.getElementById("patientName").value.trim();
-    const date = document.getElementById("operationDate").value;
-    const type = document.getElementById("operationType").value;
+<h2>🧾 متابعة ما بعد العملية</h2>
 
-    if (!name || !date) {
-        alert("يرجى ملء جميع الحقول!");
-        return;
-    }
+<div class="card">
 
-    const operation = { name, date, type };
-    operations.push(operation);
-    localStorage.setItem("operations", JSON.stringify(operations));
+<div class="grid">
 
-    displayOperations();
-    clearForm();
-}
+<input id="postBP" placeholder="ضغط الدم">
 
-// مسح الحقول بعد الإضافة
-function clearForm() {
-    document.getElementById("patientName").value = "";
-    document.getElementById("operationDate").value = "";
-    document.getElementById("operationType").selectedIndex = 0;
-}
+<input id="heartRate" placeholder="نبض القلب">
 
-// عرض العمليات في الجدول
-function displayOperations() {
-    const tbody = document.querySelector("#operationsTable tbody");
-    tbody.innerHTML = "";
+<input id="complications" placeholder="مضاعفات">
 
-    operations.forEach((op, index) => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-            <td>${op.name}</td>
-            <td>${op.date}</td>
-            <td>${op.type}</td>
-            <td><button class="delete-btn" onclick="deleteOperation(${index})">حذف</button></td>
-        `;
-        tbody.appendChild(tr);
-    });
-}
+<input id="icuDays" placeholder="أيام العناية المركزة">
 
-// حذف عملية
-function deleteOperation(index) {
-    if (confirm("هل أنت متأكد من حذف هذه العملية؟")) {
-        operations.splice(index, 1);
-        localStorage.setItem("operations", JSON.stringify(operations));
-        displayOperations();
-    }
-}
+</div>
 
-// عرض العمليات عند تحميل الصفحة
-displayOperations();
+<button onclick="saveFollowUp()">
 
-// دالة تسجيل الخروج
-function logout() {
-    window.location.href = "../index.html";
-}
-</script>
+💾 حفظ المتابعة
+
+</button>
+
+</div>
+
+
+<h2>📋 سجل العمليات</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>المريض</th>
+
+<th>العملية</th>
+
+<th>التاريخ</th>
+
+<th>الجراح</th>
+
+<th>الحالة</th>
+
+</tr>
+
+</thead>
+
+<tbody id="operationsTable"></tbody>
+
+</table>
+
+
+<h2>📊 إحصائيات العمليات</h2>
+
+<canvas id="operationsChart"></canvas>
+
+</div>
+
+<script src="../js/operations.js"></script>
 
 </body>
+
 </html>
