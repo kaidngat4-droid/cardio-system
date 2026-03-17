@@ -1,9 +1,9 @@
 /* ============================= */
-/* إعدادات عامة للنظام */
+/* إعدادات عامة */
 /* ============================= */
 
 body{
-font-family:Tahoma,'Tajawal',sans-serif;
+font-family:'Tajawal', Tahoma, sans-serif;
 margin:0;
 background:#f4f6f9;
 direction:rtl;
@@ -12,84 +12,58 @@ color:#333;
 
 
 /* ============================= */
-/* صفحة تسجيل الدخول */
+/* تسجيل الدخول */
 /* ============================= */
 
 .loginPage{
-
 height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-
 background:linear-gradient(135deg,#0d6efd,#001f4d);
-
 }
 
 .loginBox{
-
 background:white;
 padding:40px;
 border-radius:15px;
 width:320px;
 text-align:center;
-
 box-shadow:0 15px 50px rgba(0,0,0,0.35);
-
 }
 
 .loginBox h1{
-
 color:#0d6efd;
 margin-bottom:20px;
-
 }
 
 .loginBox input{
-
 width:100%;
 padding:12px;
 margin:10px 0;
-
 border-radius:8px;
 border:1px solid #ccc;
-
-font-size:14px;
-
 transition:0.3s;
-
 }
 
 .loginBox input:focus{
-
-outline:none;
 border-color:#0d6efd;
 box-shadow:0 0 6px rgba(13,110,253,0.3);
-
 }
 
 .loginBox button{
-
 width:100%;
 padding:12px;
-
 background:#0d6efd;
 color:white;
-
 border:none;
 border-radius:8px;
-
 cursor:pointer;
 font-weight:bold;
-
-transition:0.3s;
-
 }
 
 .loginBox button:hover{
-
 background:#084298;
-
 }
 
 
@@ -98,108 +72,65 @@ background:#084298;
 /* ============================= */
 
 header{
-
 background:linear-gradient(135deg,#0d6efd,#001f4d);
 color:white;
-
 padding:15px 20px;
-
 display:flex;
 justify-content:space-between;
 align-items:center;
-
 flex-wrap:wrap;
-
 }
 
 header h2{
-
 margin:0;
 font-size:20px;
-
 }
 
-header a,
-header button{
-
+header a, header button{
 background:white;
 color:#0d6efd;
-
 padding:8px 12px;
-
-border:none;
 border-radius:6px;
-
 font-weight:bold;
-
 cursor:pointer;
-
 text-decoration:none;
-
 margin-left:5px;
-
-transition:0.3s;
-
 }
 
-header a:hover,
-header button:hover{
-
+header a:hover, header button:hover{
 background:#e6e6e6;
-
 }
 
 
 /* ============================= */
-/* شريط التنقل الرئيسي */
+/* القائمة */
 /* ============================= */
 
 .mainNav{
-
 background:white;
-
 display:flex;
 justify-content:center;
-
 gap:12px;
-
 padding:12px;
-
 flex-wrap:wrap;
-
 box-shadow:0 3px 10px rgba(0,0,0,0.1);
-
 }
 
 .mainNav a{
-
-text-decoration:none;
-
 background:#eef3ff;
-
 padding:10px 15px;
-
 border-radius:8px;
-
 color:#0d6efd;
-
 font-weight:bold;
-
-transition:0.3s;
-
 display:flex;
 align-items:center;
 gap:6px;
-
 }
 
 .mainNav a:hover{
-
 background:#0d6efd;
 color:white;
-
 transform:translateY(-2px);
-
 }
 
 
@@ -208,78 +139,52 @@ transform:translateY(-2px);
 /* ============================= */
 
 .container{
-
 width:95%;
 max-width:1200px;
-
 margin:20px auto;
-
 background:white;
-
 padding:20px;
-
 border-radius:10px;
-
 box-shadow:0 5px 15px rgba(0,0,0,0.1);
-
 }
 
 
 /* ============================= */
-/* لوحة التحكم */
+/* الكروت */
 /* ============================= */
-
-.dashboard{
-
-display:grid;
-
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-
-gap:20px;
-
-padding:20px;
-
-}
 
 .card{
-
 background:white;
-
 padding:20px;
-
 border-radius:12px;
-
 text-align:center;
-
 box-shadow:0 5px 15px rgba(0,0,0,0.1);
-
 transition:0.3s;
-
-position:relative;
-
 }
 
 .card:hover{
-
-transform:translateY(-6px);
-
-box-shadow:0 10px 30px rgba(0,0,0,0.2);
-
+transform:translateY(-5px);
+box-shadow:0 10px 25px rgba(0,0,0,0.2);
 }
 
 .card h3{
-
 color:#0d6efd;
-
-margin-bottom:10px;
-
 }
 
 .card p{
-
-font-size:28px;
+font-size:26px;
 font-weight:bold;
+}
 
+
+/* ============================= */
+/* الشبكة */
+/* ============================= */
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:15px;
 }
 
 
@@ -287,76 +192,35 @@ font-weight:bold;
 /* النماذج */
 /* ============================= */
 
-input,
-select{
-
+input, select{
 width:100%;
-
 padding:10px;
-
 margin:8px 0;
-
 border-radius:6px;
-
 border:1px solid #ccc;
-
-font-size:14px;
-
-transition:0.3s;
-
 }
 
-input:focus,
-select:focus{
-
-outline:none;
-
+input:focus, select:focus{
 border-color:#0d6efd;
-
 box-shadow:0 0 5px rgba(13,110,253,0.3);
-
 }
 
 button{
-
 padding:10px 15px;
-
 border:none;
-
 border-radius:6px;
-
 cursor:pointer;
-
 font-weight:bold;
-
-transition:0.3s;
-
 }
 
 .addBtn{
-
 background:#0d6efd;
 color:white;
-
-}
-
-.addBtn:hover{
-
-background:#084298;
-
 }
 
 .deleteBtn{
-
 background:#dc3545;
 color:white;
-
-}
-
-.deleteBtn:hover{
-
-background:#bb2d3b;
-
 }
 
 
@@ -365,116 +229,40 @@ background:#bb2d3b;
 /* ============================= */
 
 table{
-
 width:100%;
-
 border-collapse:collapse;
-
 margin-top:20px;
-
 }
 
 th, td{
-
 padding:10px;
-
 border:1px solid #ddd;
-
 text-align:center;
-
 }
 
 th{
-
 background:#0d6efd;
 color:white;
-
 }
 
 tr:nth-child(even){
-
 background:#f9f9f9;
-
 }
 
 tr:hover{
-
 background:#eef3ff;
-
 }
 
 
 /* ============================= */
-/* الأيقونات ثلاثية الأبعاد */
+/* أيقونات */
 /* ============================= */
 
 .icon3d{
-
-font-size:16px;
-
 text-shadow:
 0 1px 0 #ccc,
 0 2px 0 #bbb,
-0 3px 0 #999,
-0 4px 0 #888,
-0 5px 0 #777;
-
-}
-
-
-/* ============================= */
-/* توقيع المطور */
-/* ============================= */
-
-.developerSignatureNeon{
-
-margin-top:15px;
-
-font-size:16px;
-
-text-align:center;
-
-font-weight:700;
-
-font-family:'Aref Ruqaa',serif;
-
-letter-spacing:1.5px;
-
-background: linear-gradient(
-45deg,
-#ff0000,
-#ff7f00,
-#ffff00,
-#00ffcc,
-#007fff,
-#ff00ff
-);
-
-background-size:600%;
-
--webkit-background-clip:text;
-background-clip:text;
-
-color:transparent;
-
-text-shadow:
-0 0 5px #ff0000,
-0 0 10px #ff7f00,
-0 0 15px #ffff00,
-0 0 20px #00ffcc,
-0 0 25px #007fff,
-0 0 30px #ff00ff;
-
-animation:neonGlow 8s linear infinite alternate;
-
-}
-
-@keyframes neonGlow{
-
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
-
+0 3px 0 #999;
 }
 
 
@@ -485,69 +273,52 @@ animation:neonGlow 8s linear infinite alternate;
 @media(max-width:768px){
 
 header{
-
 flex-direction:column;
 gap:10px;
-
-}
-
-.dashboard{
-
-grid-template-columns:1fr;
-
 }
 
 .mainNav{
-
 flex-direction:column;
-align-items:center;
-
 }
 
 }
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:15px;
+/* ============================= */
+/* الوضع الليلي */
+/* ============================= */
+
+.dark-mode{
+background:#121212;
+color:#eee;
 }
 
-.card{
-padding:25px;
-}
-body {
-    font-family: 'Tajawal', sans-serif;
-    margin: 0;
-    background: #f4f6f9;
-    direction: rtl;
+.dark-mode header{
+background:linear-gradient(135deg,#000,#222);
 }
 
-header {
-    background: linear-gradient(135deg,#0d6efd,#001f4d);
-    color: white;
-    padding: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.dark-mode .container,
+.dark-mode .card{
+background:#1e1e1e;
+color:#eee;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 20px;
+.dark-mode table{
+color:#eee;
 }
 
-.card {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+.dark-mode th{
+background:#333;
 }
 
-button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
+.dark-mode tr:nth-child(even){
+background:#1a1a1a;
+}
+
+.dark-mode .mainNav a{
+background:#2a2a2a;
+color:#ccc;
+}
+
+.dark-mode .mainNav a:hover{
+background:#0d6efd;
+color:white;
 }
