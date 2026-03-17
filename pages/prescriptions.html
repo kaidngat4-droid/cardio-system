@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>الوصفات الطبية | مركز القلب</title>
+<title>الوصفات الطبية | نظام مركز القلب</title>
 
 <link rel="stylesheet" href="../css/style.css">
 
@@ -15,24 +15,10 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 
 <style>
 
-body{
-font-family:Tajawal;
-margin:0;
-background:#f4f6f9;
-}
-
-header{
-background:linear-gradient(135deg,#0d6efd,#001f4d);
-color:white;
-padding:15px 20px;
-display:flex;
-justify-content:space-between;
-}
-
 .container{
 
 width:95%;
-max-width:1100px;
+max-width:1200px;
 margin:20px auto;
 background:white;
 padding:20px;
@@ -41,24 +27,11 @@ box-shadow:0 10px 25px rgba(0,0,0,0.1);
 
 }
 
-input,select{
+.formGrid{
 
-width:100%;
-padding:10px;
-margin:8px 0;
-border-radius:6px;
-border:1px solid #ccc;
-
-}
-
-button{
-
-background:#0d6efd;
-color:white;
-border:none;
-padding:10px;
-border-radius:6px;
-cursor:pointer;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:10px;
 
 }
 
@@ -79,8 +52,40 @@ text-align:center;
 }
 
 th{
+
 background:#0d6efd;
 color:white;
+
+}
+
+button{
+
+padding:8px 12px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+
+}
+
+.addBtn{
+
+background:#0d6efd;
+color:white;
+
+}
+
+.printBtn{
+
+background:#198754;
+color:white;
+
+}
+
+.deleteBtn{
+
+background:#dc3545;
+color:white;
+
 }
 
 </style>
@@ -94,24 +99,20 @@ color:white;
 <h2>
 
 <i class="fa-solid fa-file-medical"></i>
-الوصفات الطبية
+نظام الوصفات الطبية
 
 </h2>
 
-<a href="dashboard.html">لوحة التحكم</a>
+<a href="dashboard.html">🏠 لوحة التحكم</a>
 
 </header>
 
 
 <div class="container">
 
-<h3>
+<h3>➕ إنشاء وصفة طبية</h3>
 
-<i class="fa-solid fa-prescription"></i>
-
-إضافة وصفة
-
-</h3>
+<div class="formGrid">
 
 <select id="patientSelect"></select>
 
@@ -119,11 +120,21 @@ color:white;
 
 <input type="text" id="dosage" placeholder="الجرعة">
 
-<input type="text" id="frequency" placeholder="عدد المرات يومياً">
+<input type="number" id="frequency" placeholder="عدد المرات يومياً">
 
-<button onclick="addPrescription()">
+<input type="number" id="duration" placeholder="مدة العلاج (أيام)">
 
-إضافة وصفة
+<input type="text" id="instructions" placeholder="تعليمات للمريض">
+
+<input type="text" id="doctor" placeholder="اسم الطبيب">
+
+</div>
+
+<br>
+
+<button class="addBtn" onclick="addPrescription()">
+
+💾 حفظ الوصفة
 
 </button>
 
@@ -132,7 +143,7 @@ color:white;
 
 <div class="container">
 
-<h3>قائمة الوصفات</h3>
+<h3>📋 سجل الوصفات الطبية</h3>
 
 <table>
 
@@ -140,19 +151,22 @@ color:white;
 
 <tr>
 
+<th>رقم الوصفة</th>
 <th>المريض</th>
 <th>الدواء</th>
 <th>الجرعة</th>
-<th>عدد المرات</th>
+<th>المرات</th>
+<th>المدة</th>
+<th>الطبيب</th>
+<th>التاريخ</th>
+<th>طباعة</th>
 <th>حذف</th>
 
 </tr>
 
 </thead>
 
-<tbody id="prescriptionTable">
-
-</tbody>
+<tbody id="prescriptionTable"></tbody>
 
 </table>
 
@@ -174,11 +188,11 @@ function loadPatients(){
 
 let select=document.getElementById("patientSelect");
 
-select.innerHTML='<option>اختر المريض</option>';
+select.innerHTML="<option>اختر المريض</option>";
 
 patients.forEach((p,i)=>{
 
-select.innerHTML+=`<option value="${i}">${p.name}</option>`;
+select.innerHTML+=`<option value="${i}">${p.name} - ${p.id}</option>`;
 
 });
 
@@ -193,7 +207,7 @@ function loadDrugs(){
 
 let select=document.getElementById("drugSelect");
 
-select.innerHTML='<option>اختر الدواء</option>';
+select.innerHTML="<option>اختر الدواء</option>";
 
 drugs.forEach((d,i)=>{
 
@@ -206,24 +220,61 @@ select.innerHTML+=`<option value="${i}">${d.name}</option>`;
 loadDrugs();
 
 
+/* توليد رقم وصفة */
+
+function generateRx(){
+
+return "RX-" + Date.now();
+
+}
+
+
 /* إضافة وصفة */
 
 function addPrescription(){
 
 let pIndex=document.getElementById("patientSelect").value;
 let dIndex=document.getElementById("drugSelect").value;
+
 let dosage=document.getElementById("dosage").value;
 let frequency=document.getElementById("frequency").value;
+let duration=document.getElementById("duration").value;
+let instructions=document.getElementById("instructions").value;
+let doctor=document.getElementById("doctor").value;
 
 if(!dosage || !frequency){
 
-alert("يرجى تعبئة الحقول");
+alert("يرجى تعبئة البيانات");
 
 return;
 
 }
 
-/* إنقاص المخزون */
+let prescription={
+
+id:generateRx(),
+
+patient:patients[pIndex].name,
+
+patientId:patients[pIndex].id,
+
+drug:drugs[dIndex].name,
+
+dosage:dosage,
+
+frequency:frequency,
+
+duration:duration,
+
+instructions:instructions,
+
+doctor:doctor,
+
+date:new Date().toLocaleDateString()
+
+};
+
+/* تقليل المخزون */
 
 if(drugs[dIndex].quantity>0){
 
@@ -232,17 +283,6 @@ drugs[dIndex].quantity--;
 localStorage.setItem("drugs",JSON.stringify(drugs));
 
 }
-
-/* إنشاء الوصفة */
-
-let prescription={
-
-patient:pIndex,
-drug:dIndex,
-dosage:dosage,
-frequency:frequency
-
-};
 
 prescriptions.push(prescription);
 
@@ -267,17 +307,28 @@ table.innerHTML+=`
 
 <tr>
 
-<td>${patients[p.patient].name}</td>
-
-<td>${drugs[p.drug].name}</td>
-
+<td>${p.id}</td>
+<td>${p.patient}</td>
+<td>${p.drug}</td>
 <td>${p.dosage}</td>
-
 <td>${p.frequency}</td>
+<td>${p.duration}</td>
+<td>${p.doctor}</td>
+<td>${p.date}</td>
 
 <td>
 
-<button onclick="deletePrescription(${i})">
+<button class="printBtn" onclick="window.print()">
+
+🖨
+
+</button>
+
+</td>
+
+<td>
+
+<button class="deleteBtn" onclick="deletePrescription(${i})">
 
 🗑
 
