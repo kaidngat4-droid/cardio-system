@@ -1,174 +1,296 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>التقارير | نظام مركز القلب</title>
+
+<title>التقارير الطبية الذكية | مركز القلب</title>
 
 <link rel="stylesheet" href="../css/style.css">
 
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
-.container {
-    width: 95%;
-    max-width: 1200px;
-    margin: 30px auto;
-    background: #ffffff;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+
+.analyticsGrid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+margin-bottom:20px;
 }
 
-h2 {
-    color: #0d6efd;
-    margin-bottom: 15px;
+.analyticsCard{
+
+background:white;
+padding:20px;
+border-radius:12px;
+text-align:center;
+
+box-shadow:0 5px 25px rgba(0,0,0,0.1);
+
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+.analyticsCard h3{
+color:#0d6efd;
 }
 
-th, td {
-    border: 1px solid #dee2e6;
-    padding: 10px;
-    text-align: center;
+.chartsGrid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(400px,1fr));
+gap:20px;
 }
 
-th {
-    background: #0d6efd;
-    color: white;
+.chartBox{
+
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 5px 25px rgba(0,0,0,0.1);
+
 }
 
-tr:nth-child(even) {
-    background: #f8f9fa;
+.aiSection{
+
+background:white;
+padding:20px;
+margin-top:20px;
+border-radius:12px;
+box-shadow:0 5px 25px rgba(0,0,0,0.1);
+
 }
 
-.export-btn {
-    background: linear-gradient(135deg,#0d6efd,#084298);
-    color: white;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-top: 10px;
+.alert{
+
+background:#ffe5e5;
+padding:10px;
+margin:5px 0;
+border-radius:6px;
+
 }
 
-.export-btn:hover {
-    background: linear-gradient(135deg,#084298,#0d6efd);
-}
 </style>
+
 </head>
+
 <body>
 
-<header style="background:linear-gradient(135deg,#0d6efd,#001f4d);color:white;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;">
-    <h2>📊 تقارير النظام</h2>
-    <div>
-        <a href="../dashboard.html" style="color:white;margin-right:10px;text-decoration:none;">لوحة التحكم</a>
-        <button onclick="logout()" style="background:#dc3545;color:white;padding:8px 12px;border:none;border-radius:6px;cursor:pointer;">تسجيل خروج</button>
-    </div>
+<header>
+
+<h2>📊 مركز تحليل بيانات القلب</h2>
+
+<div>
+
+<a href="dashboard.html">🏠 الرئيسية</a>
+
+<a href="patients.html">👨‍⚕️ المرضى</a>
+
+<a href="appointments.html">📅 المواعيد</a>
+
+<a href="tests.html">🧪 التحاليل</a>
+
+<a href="operations.html">🫀 العمليات</a>
+
+<a href="pharmacy.html">💊 الصيدلية</a>
+
+</div>
+
 </header>
 
-<div class="container">
-    <h2>قائمة المرضى</h2>
-    <table id="patientsReport">
-        <thead>
-            <tr>
-                <th>الاسم</th>
-                <th>العمر</th>
-                <th>الجنس</th>
-                <th>الهاتف</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
-    <button class="export-btn" onclick="exportTableToExcel('patientsReport','patients_report')">تصدير إلى Excel</button>
-</div>
 
 <div class="container">
-    <h2>قائمة الوصفات الطبية</h2>
-    <table id="prescriptionsReport">
-        <thead>
-            <tr>
-                <th>المريض</th>
-                <th>الدواء</th>
-                <th>الجرعة</th>
-                <th>ملاحظات</th>
-                <th>التاريخ</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
-    <button class="export-btn" onclick="exportTableToExcel('prescriptionsReport','prescriptions_report')">تصدير إلى Excel</button>
+
+<h2>📈 التحليل الطبي الذكي</h2>
+
+
+<div class="analyticsGrid">
+
+<div class="analyticsCard">
+<h3>👨‍⚕️ المرضى</h3>
+<p id="patientsCount"></p>
 </div>
+
+<div class="analyticsCard">
+<h3>📅 المواعيد</h3>
+<p id="appointmentsCount"></p>
+</div>
+
+<div class="analyticsCard">
+<h3>🧪 التحاليل</h3>
+<p id="testsCount"></p>
+</div>
+
+<div class="analyticsCard">
+<h3>🫀 العمليات</h3>
+<p id="operationsCount"></p>
+</div>
+
+<div class="analyticsCard">
+<h3>💊 الوصفات</h3>
+<p id="pharmacyCount"></p>
+</div>
+
+</div>
+
+
+<div class="chartsGrid">
+
+<div class="chartBox">
+<h3>📈 المرضى شهرياً</h3>
+<canvas id="patientsChart"></canvas>
+</div>
+
+
+<div class="chartBox">
+<h3>🫀 انتشار أمراض القلب</h3>
+<canvas id="diseaseChart"></canvas>
+</div>
+
+
+<div class="chartBox">
+<h3>🏥 العمليات القلبية</h3>
+<canvas id="operationsChart"></canvas>
+</div>
+
+
+<div class="chartBox">
+<h3>🧪 تحليل المختبر</h3>
+<canvas id="labChart"></canvas>
+</div>
+
+</div>
+
+
+<div class="aiSection">
+
+<h3>🧠 التنبيهات الطبية الذكية</h3>
+
+<div id="aiAlerts"></div>
+
+</div>
+
+</div>
+
 
 <script>
-// جلب البيانات من localStorage
+
 let patients = JSON.parse(localStorage.getItem("patients")) || [];
-let prescriptions = JSON.parse(localStorage.getItem("prescriptions")) || [];
 
-// عرض المرضى
-function displayPatientsReport() {
-    const tbody = document.querySelector("#patientsReport tbody");
-    tbody.innerHTML = "";
-    patients.forEach(p => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-            <td>${p.name}</td>
-            <td>${p.age}</td>
-            <td>${p.gender}</td>
-            <td>${p.phone}</td>
-        `;
-        tbody.appendChild(tr);
-    });
+let appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+
+let tests = JSON.parse(localStorage.getItem("tests")) || [];
+
+let operations = JSON.parse(localStorage.getItem("operations")) || [];
+
+let pharmacy = JSON.parse(localStorage.getItem("prescriptions")) || [];
+
+
+/* الإحصائيات */
+
+patientsCount.innerText = patients.length;
+
+appointmentsCount.innerText = appointments.length;
+
+testsCount.innerText = tests.length;
+
+operationsCount.innerText = operations.length;
+
+pharmacyCount.innerText = pharmacy.length;
+
+
+/* تنبيهات الذكاء */
+
+let aiAlerts = document.getElementById("aiAlerts");
+
+patients.forEach(p=>{
+
+if(p.bloodPressure > 160){
+
+aiAlerts.innerHTML +=
+`<div class="alert">⚠ خطر ضغط مرتفع للمريض ${p.name}</div>`;
+
 }
 
-// عرض الوصفات
-function displayPrescriptionsReport() {
-    const tbody = document.querySelector("#prescriptionsReport tbody");
-    tbody.innerHTML = "";
-    prescriptions.forEach(p => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-            <td>${p.patient}</td>
-            <td>${p.medication}</td>
-            <td>${p.dosage}</td>
-            <td>${p.notes}</td>
-            <td>${p.date}</td>
-        `;
-        tbody.appendChild(tr);
-    });
+if(p.ldl > 160){
+
+aiAlerts.innerHTML +=
+`<div class="alert">⚠ LDL مرتفع للمريض ${p.name}</div>`;
+
 }
 
-// تصدير الجدول إلى Excel
-function exportTableToExcel(tableID, filename = ''){
-    let downloadLink;
-    const dataType = 'application/vnd.ms-excel';
-    const tableSelect = document.getElementById(tableID);
-    const tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
-    filename = filename?filename+'.xls':'excel_data.xls';
-    downloadLink = document.createElement("a");
-    document.body.appendChild(downloadLink);
-    if(navigator.msSaveOrOpenBlob){
-        const blob = new Blob(['\ufeff', tableHTML], { type: dataType });
-        navigator.msSaveOrOpenBlob(blob, filename);
-    }else{
-        downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
-        downloadLink.download = filename;
-        downloadLink.click();
-    }
+});
+
+
+/* المرضى */
+
+new Chart(document.getElementById("patientsChart"),{
+
+type:"line",
+
+data:{
+labels:["Jan","Feb","Mar","Apr","May","Jun"],
+datasets:[{
+label:"Patients",
+data:[10,14,20,18,22,25]
+}]
 }
 
-// عرض البيانات عند التحميل
-displayPatientsReport();
-displayPrescriptionsReport();
+});
 
-// تسجيل الخروج
-function logout() {
-    window.location.href = "../index.html";
+
+/* الأمراض */
+
+new Chart(document.getElementById("diseaseChart"),{
+
+type:"pie",
+
+data:{
+labels:["CAD","Heart Attack","Arrhythmia","Hypertension"],
+datasets:[{
+data:[35,20,15,30]
+}]
 }
+
+});
+
+
+/* العمليات */
+
+new Chart(document.getElementById("operationsChart"),{
+
+type:"bar",
+
+data:{
+labels:["Angioplasty","CABG","Pacemaker"],
+datasets:[{
+data:[12,8,6]
+}]
+}
+
+});
+
+
+/* المختبر */
+
+new Chart(document.getElementById("labChart"),{
+
+type:"bar",
+
+data:{
+labels:["Troponin","LDL","HDL","Triglycerides"],
+datasets:[{
+data:[4,18,10,8]
+}]
+}
+
+});
+
 </script>
 
 </body>
+
 </html>
