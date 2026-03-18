@@ -25,14 +25,12 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 
 <div>
 
+<span id="currentUser"></span>
+
 <a href="dashboard.html"><i class="fa fa-chart-line"></i> لوحة التحكم</a>
-
 <a href="appointments.html"><i class="fa fa-calendar-check"></i> المواعيد</a>
-
 <a href="tests.html"><i class="fa fa-flask"></i> التحاليل</a>
-
 <a href="pharmacy.html"><i class="fa fa-pills"></i> الصيدلية</a>
-
 <a href="operations.html"><i class="fa fa-heart-pulse"></i> العمليات</a>
 
 <button onclick="logout()">تسجيل خروج</button>
@@ -53,46 +51,32 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 
 <div class="grid">
 
+<input id="patientId" readonly placeholder="رقم المريض (تلقائي)">
 <input id="name" placeholder="الاسم الكامل">
-
 <input id="nationalId" placeholder="الرقم الوطني">
-
 <input id="age" placeholder="العمر">
 
 <select id="gender">
-
 <option value="">الجنس</option>
 <option>ذكر</option>
 <option>أنثى</option>
-
 </select>
 
 <select id="bloodType">
-
 <option value="">فصيلة الدم</option>
 <option>A+</option>
-<option>A-</option>
-<option>B+</option>
-<option>B-</option>
-<option>AB+</option>
 <option>O+</option>
-<option>O-</option>
-
+<option>B+</option>
+<option>AB+</option>
 </select>
 
 <input id="phone" placeholder="رقم الهاتف">
-
 <input id="diagnosis" placeholder="تشخيص القلب">
-
 <input id="bloodPressure" placeholder="ضغط الدم">
 
 </div>
 
-<button class="addBtn" onclick="addPatient()">
-
-💾 حفظ المريض
-
-</button>
+<button class="addBtn" onclick="addPatient()">💾 حفظ المريض</button>
 
 </div>
 
@@ -100,7 +84,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 
 <input id="search" placeholder="🔍 بحث عن مريض..." onkeyup="searchPatient()">
 
-<!-- جدول المرضى -->
+<!-- جدول -->
 
 <div class="card">
 
@@ -109,20 +93,16 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 <table>
 
 <thead>
-
 <tr>
-
 <th>الرقم</th>
 <th>الاسم</th>
 <th>العمر</th>
-<th>الجنس</th>
-<th>فصيلة الدم</th>
 <th>التشخيص</th>
-<th>عرض الملف</th>
+<th>ملف</th>
+<th>حجز</th>
+<th>تحاليل</th>
 <th>حذف</th>
-
 </tr>
-
 </thead>
 
 <tbody id="patientsTable"></tbody>
@@ -131,23 +111,205 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 
 </div>
 
-
-<!-- الملف الطبي -->
+<!-- الملف -->
 
 <div class="card" id="patientProfile" style="display:none">
 
-<h3>🧾 الملف الطبي للمريض</h3>
+<h3>🧾 الملف الطبي</h3>
 
 <div id="profileContent"></div>
 
+<h4>📊 ضغط الدم</h4>
 <canvas id="patientChart"></canvas>
 
-</div>
+<h4>📅 المواعيد</h4>
+<ul id="patientAppointments"></ul>
+
+<h4>🧪 التحاليل</h4>
+<ul id="patientTests"></ul>
+
+<h4>🫀 العمليات</h4>
+<ul id="patientOperations"></ul>
 
 </div>
 
-<script src="../js/patients.js"></script>
+</div>
+
+<script src="../js/app.js"></script>
+
+<script>
+
+/* البيانات */
+
+let patients = JSON.parse(localStorage.getItem("patients")) || [];
+let appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+let tests = JSON.parse(localStorage.getItem("tests")) || [];
+let operations = JSON.parse(localStorage.getItem("operations")) || [];
+
+/* ID */
+
+function generateId(){
+return "P-" + Date.now();
+}
+
+document.getElementById("patientId").value = generateId();
+
+/* إضافة */
+
+function addPatient(){
+
+let p = {
+id: document.getElementById("patientId").value,
+name: name.value,
+age: age.value,
+diagnosis: diagnosis.value,
+bloodPressure: bloodPressure.value,
+nationalId: nationalId.value,
+gender: gender.value,
+bloodType: bloodType.value,
+phone: phone.value
+};
+
+if(!p.name){ alert("أدخل الاسم"); return; }
+
+patients.push(p);
+
+localStorage.setItem("patients", JSON.stringify(patients));
+
+alert("✅ تم حفظ المريض");
+
+document.getElementById("patientId").value = generateId();
+
+displayPatients();
+
+}
+
+/* عرض */
+
+function displayPatients(){
+
+patientsTable.innerHTML="";
+
+patients.forEach((p,i)=>{
+
+patientsTable.innerHTML+=`
+
+<tr>
+
+<td>${p.id}</td>
+<td>${p.name}</td>
+<td>${p.age}</td>
+<td>${p.diagnosis}</td>
+
+<td><button onclick="viewPatient(${i})">👁</button></td>
+
+<td><button onclick="goAppointments('${p.id}')">📅</button></td>
+
+<td><button onclick="goTests('${p.id}')">🧪</button></td>
+
+<td><button onclick="deletePatient(${i})">🗑</button></td>
+
+</tr>
+
+`;
+
+});
+
+}
+
+/* حذف */
+
+function deletePatient(i){
+
+patients.splice(i,1);
+
+localStorage.setItem("patients", JSON.stringify(patients));
+
+displayPatients();
+
+}
+
+/* البحث */
+
+function searchPatient(){
+
+let val = search.value.toLowerCase();
+
+document.querySelectorAll("#patientsTable tr").forEach(r=>{
+r.style.display = r.innerText.toLowerCase().includes(val) ? "" : "none";
+});
+
+}
+
+/* عرض الملف الكامل */
+
+function viewPatient(i){
+
+let p = patients[i];
+
+patientProfile.style.display="block";
+
+profileContent.innerHTML = `
+<p>👤 ${p.name}</p>
+<p>🆔 ${p.id}</p>
+<p>📞 ${p.phone}</p>
+<p>🩸 ${p.bloodType}</p>
+<p>💔 ${p.diagnosis}</p>
+`;
+
+/* مواعيد */
+
+patientAppointments.innerHTML="";
+appointments.filter(a=>a.patientId===p.id)
+.forEach(a=>{
+patientAppointments.innerHTML+=`<li>${a.date} - ${a.service}</li>`;
+});
+
+/* تحاليل */
+
+patientTests.innerHTML="";
+tests.filter(t=>t.patientId===p.id)
+.forEach(t=>{
+patientTests.innerHTML+=`<li>${t.type} : ${t.result}</li>`;
+});
+
+/* عمليات */
+
+patientOperations.innerHTML="";
+operations.filter(o=>o.patientId===p.id)
+.forEach(o=>{
+patientOperations.innerHTML+=`<li>${o.procedure}</li>`;
+});
+
+/* رسم */
+
+new Chart(patientChart,{
+type:"line",
+data:{
+labels:["1","2","3"],
+datasets:[{label:"ضغط الدم",data:[120,140,160]}]
+}
+});
+
+}
+
+/* ربط الصفحات */
+
+function goAppointments(id){
+localStorage.setItem("selectedPatient", id);
+window.location="appointments.html";
+}
+
+function goTests(id){
+localStorage.setItem("selectedPatient", id);
+window.location="tests.html";
+}
+
+/* تشغيل */
+
+displayPatients();
+
+</script>
 
 </body>
-
 </html>
