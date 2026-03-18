@@ -7,7 +7,7 @@ let appointments = JSON.parse(localStorage.getItem("appointments")) || [];
 let tests = JSON.parse(localStorage.getItem("tests")) || [];
 let operations = JSON.parse(localStorage.getItem("operations")) || [];
 
-/* توليد ID عالمي */
+/* توليد ID */
 
 function generateId(){
     return "P-" + Date.now();
@@ -21,22 +21,21 @@ function addPatient(){
 
         id: generateId(),
 
-        name: name.value,
-        nationalId: nationalId.value,
-        age: age.value,
-        gender: gender.value,
-        bloodType: bloodType.value,
-        phone: phone.value,
+        name: document.getElementById("name").value,
+        nationalId: document.getElementById("nationalId").value,
+        age: document.getElementById("age").value,
+        gender: document.getElementById("gender").value,
+        bloodType: document.getElementById("bloodType").value,
+        phone: document.getElementById("phone").value,
 
-        diagnosis: diagnosis.value,
-        bloodPressure: bloodPressure.value,
+        diagnosis: document.getElementById("diagnosis").value,
+        bloodPressure: document.getElementById("bloodPressure").value,
 
-        /* بيانات AI */
+        /* AI */
         ldl: "",
         troponin: "",
         ecg: "",
 
-        /* تاريخ */
         createdAt: new Date().toLocaleString()
 
     };
@@ -66,7 +65,6 @@ function displayPatients(){
     patients.forEach((p,index)=>{
 
         table.innerHTML += `
-
         <tr>
         <td>${p.id}</td>
         <td>${p.name}</td>
@@ -116,7 +114,7 @@ function searchPatient(){
     });
 }
 
-/* عرض الملف الكامل */
+/* عرض الملف */
 
 function viewPatient(index){
 
@@ -125,18 +123,15 @@ function viewPatient(index){
     document.getElementById("patientProfile").style.display="block";
 
     document.getElementById("profileContent").innerHTML = `
-
     <p>👤 ${p.name}</p>
     <p>🆔 ${p.id}</p>
     <p>📱 ${p.phone}</p>
     <p>🩸 ${p.bloodType}</p>
     <p>💔 ${p.diagnosis}</p>
     <p>🕒 ${p.createdAt}</p>
-
     `;
 
     /* المواعيد */
-
     let appList = document.getElementById("patientAppointments");
     if(appList){
         appList.innerHTML="";
@@ -148,7 +143,6 @@ function viewPatient(index){
     }
 
     /* التحاليل */
-
     let testList = document.getElementById("patientTests");
     if(testList){
         testList.innerHTML="";
@@ -160,7 +154,6 @@ function viewPatient(index){
     }
 
     /* العمليات */
-
     let opList = document.getElementById("patientOperations");
     if(opList){
         opList.innerHTML="";
@@ -171,8 +164,7 @@ function viewPatient(index){
         });
     }
 
-    /* رسم حقيقي */
-
+    /* الرسم */
     new Chart(document.getElementById("patientChart"),{
         type:"line",
         data:{
