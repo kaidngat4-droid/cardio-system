@@ -1,48 +1,163 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>لوحة التحكم | نظام مركز القلب</title>
+<title>لوحة التحكم | مركز القلب</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700&display=swap" rel="stylesheet">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.8/index.global.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.8/index.global.min.css">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.8/index.global.min.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<link rel="stylesheet" href="../css/style.css">
+<style>
 
+/* ===== الوضع العام ===== */
+
+body{
+font-family:'Tajawal';
+margin:0;
+background:#f4f6f9;
+transition:0.3s;
+}
+
+.dark{
+background:#0f172a;
+color:#fff;
+}
+
+/* ===== الهيدر ===== */
+
+header{
+background:linear-gradient(135deg,#0d6efd,#001f4d);
+color:white;
+padding:15px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+}
+
+header .nav a, header button{
+background:white;
+color:#0d6efd;
+padding:6px 10px;
+margin:3px;
+border-radius:6px;
+border:none;
+cursor:pointer;
+text-decoration:none;
+}
+
+/* ===== الحاوية ===== */
+
+.container{
+width:95%;
+margin:auto;
+}
+
+/* ===== البطاقات ===== */
+
+.dashboard{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:15px;
+}
+
+.card{
+background:white;
+padding:15px;
+border-radius:10px;
+text-align:center;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.dark .card{
+background:#1e293b;
+}
+
+.card h3{
+color:#0d6efd;
+}
+
+/* ===== أزرار سريعة ===== */
+
+.quick{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+gap:10px;
+margin:20px 0;
+}
+
+.quick button{
+padding:10px;
+border:none;
+border-radius:8px;
+background:#0d6efd;
+color:white;
+cursor:pointer;
+}
+
+/* ===== الكالندر ===== */
+
+#calendar{
+background:white;
+padding:10px;
+border-radius:10px;
+}
+
+.dark #calendar{
+background:#1e293b;
+}
+
+/* ===== زر الوضع الليلي ===== */
+
+.toggleDark{
+background:black;
+color:white;
+}
+
+/* ===== التوقيع ===== */
+
+.dev{
+text-align:center;
+margin-top:20px;
+background:linear-gradient(45deg,red,orange,yellow,cyan,blue,magenta);
+-webkit-background-clip:text;
+color:transparent;
+animation:move 6s linear infinite;
+}
+
+@keyframes move{
+0%{background-position:0%}
+100%{background-position:400%}
+}
+
+</style>
 </head>
 
 <body>
 
 <header>
 
-<h2>🫀 نظام مركز القلب</h2>
+<h2>🫀 مركز القلب</h2>
 
-<div>
+<div class="nav">
 
-<span id="currentUser" style="margin-left:10px;font-weight:bold;"></span>
+<span id="currentUser"></span>
 
-<a href="patients.html"><i class="fa fa-user-injured"></i> المرضى</a>
-<a href="appointments.html"><i class="fa fa-calendar-check"></i> المواعيد</a>
-<a href="tests.html"><i class="fa fa-flask"></i> التحاليل</a>
-<a href="operations.html"><i class="fa fa-heart-pulse"></i> العمليات</a>
-<a href="pharmacy.html"><i class="fa fa-pills"></i> الصيدلية</a>
-<a href="reports.html"><i class="fa fa-chart-line"></i> التقارير</a>
+<a href="patients.html">👤 المرضى</a>
+<a href="appointments.html">📅 المواعيد</a>
+<a href="tests.html">🧪 التحاليل</a>
+<a href="operations.html">🫀 العمليات</a>
+<a href="pharmacy.html">💊 الصيدلية</a>
+<a href="reports.html">📊 التقارير</a>
 
-<button onclick="toggleDarkMode()">🌙</button>
-<button onclick="logout()">تسجيل خروج</button>
+<button onclick="toggleDark()">🌙</button>
+<button onclick="logout()">🚪</button>
 
 </div>
 
@@ -50,19 +165,19 @@ href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.8/index.global.min
 
 <div class="container">
 
-<h2>📊 لوحة التحكم الطبية الذكية</h2>
+<h2>📊 لوحة التحكم الذكية</h2>
 
-<!-- الكروت -->
+<!-- إحصائيات -->
 
 <div class="dashboard">
 
 <div class="card">
-<h3>👥 المرضى</h3>
+<h3>👤 المرضى</h3>
 <p id="patientsCount">0</p>
 </div>
 
 <div class="card">
-<h3>📅 مواعيد اليوم</h3>
+<h3>📅 اليوم</h3>
 <p id="todayAppointments">0</p>
 </div>
 
@@ -76,193 +191,110 @@ href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.8/index.global.min
 <p id="operationsCount">0</p>
 </div>
 
-<div class="card">
-<h3>💊 الصيدلية</h3>
-<p id="pharmacyCount">0</p>
 </div>
 
-</div>
+<!-- أزرار سريعة -->
 
-<!-- الرسوم -->
+<div class="quick">
 
-<div class="charts">
-
-<div class="card">
-<h3>📈 عدد المرضى</h3>
-<canvas id="patientsChart"></canvas>
-</div>
-
-<div class="card">
-<h3>🫀 أمراض القلب</h3>
-<canvas id="diseaseChart"></canvas>
-</div>
+<button onclick="go('patients.html')">➕ مريض</button>
+<button onclick="go('appointments.html')">📅 موعد</button>
+<button onclick="go('tests.html')">🧪 تحليل</button>
+<button onclick="go('operations.html')">🫀 عملية</button>
 
 </div>
 
-<!-- التقويم -->
+<!-- رسم -->
 
-<div class="card">
-<h3>📅 التقويم الطبي</h3>
+<canvas id="chart"></canvas>
+
+<!-- تقويم -->
+
 <div id="calendar"></div>
-</div>
 
-<!-- التنبيهات -->
-
-<div class="card alerts">
-<h3>⚠ التنبيهات الطبية</h3>
-<ul id="alertsList"></ul>
-</div>
-
-<!-- AI -->
-
-<div class="card">
-<h3>🧠 التحليل الذكي (AI)</h3>
-
-<table>
-<thead>
-<tr>
-<th>المريض</th>
-<th>الخطر</th>
-<th>ECG</th>
-<th>المختبر</th>
-<th>التوصية</th>
-</tr>
-</thead>
-
-<tbody id="aiTable"></tbody>
-
-</table>
-
+<div class="dev">
+برمجة وتصميم D / Salah Al-ahdel
 </div>
 
 </div>
-
-<script src="../js/app.js"></script>
 
 <script>
 
-/* البيانات */
+/* ===== حماية ===== */
+
+if(localStorage.getItem("loggedIn") !== "true"){
+location.href="../index.html";
+}
+
+/* ===== عرض المستخدم ===== */
+
+document.getElementById("currentUser").innerText =
+"👤 " + (localStorage.getItem("currentUser") || "");
+
+/* ===== بيانات ===== */
 
 let patients = JSON.parse(localStorage.getItem("patients")) || [];
 let appointments = JSON.parse(localStorage.getItem("appointments")) || [];
 let tests = JSON.parse(localStorage.getItem("tests")) || [];
 let operations = JSON.parse(localStorage.getItem("operations")) || [];
-let pharmacy = JSON.parse(localStorage.getItem("pharmacy")) || [];
 
-/* الإحصائيات */
+/* ===== إحصائيات ===== */
 
-patientsCount.innerText = patients.length;
-testsCount.innerText = tests.length;
-operationsCount.innerText = operations.length;
-pharmacyCount.innerText = pharmacy.length;
-
-/* مواعيد اليوم */
+document.getElementById("patientsCount").innerText = patients.length;
+document.getElementById("testsCount").innerText = tests.length;
+document.getElementById("operationsCount").innerText = operations.length;
 
 let today = new Date().toISOString().split("T")[0];
-
-todayAppointments.innerText =
+document.getElementById("todayAppointments").innerText =
 appointments.filter(a=>a.date===today).length;
 
-/* التنبيهات */
+/* ===== الرسم ===== */
 
-patients.forEach(p=>{
-
-if(p.bloodPressure && parseInt(p.bloodPressure)>160){
-alertsList.innerHTML += `<li>🚨 ضغط مرتفع للمريض ${p.name}</li>`;
-}
-
-});
-
-/* الرسم */
-
-new Chart(patientsChart,{
-type:"line",
+new Chart(document.getElementById("chart"),{
+type:"bar",
 data:{
-labels:["يناير","فبراير","مارس","أبريل","مايو","يونيو"],
+labels:["مرضى","تحاليل","عمليات"],
 datasets:[{
-label:"المرضى",
-data:[5,8,6,9,12,10],
-fill:true,
-tension:0.4
+data:[patients.length,tests.length,operations.length]
 }]
 }
 });
 
-/* التقويم */
+/* ===== التقويم ===== */
 
-let calendar = new FullCalendar.Calendar(calendarEl,{
+let calendar = new FullCalendar.Calendar(document.getElementById("calendar"),{
 initialView:'dayGridMonth',
 events:[
-...appointments.map(a=>({title:a.patient,start:a.date+"T"+a.time})),
-...operations.map(o=>({title:o.patient,start:o.date+"T"+o.time}))
+...appointments.map(a=>({title:"📅 "+a.date,start:a.date})),
+...operations.map(o=>({title:"🫀 "+o.procedure,start:o.date}))
 ]
 });
+
 calendar.render();
 
-/* ================= AI ================= */
+/* ===== الوضع الليلي ===== */
 
-function runAI(){
-
-aiTable.innerHTML="";
-
-patients.forEach(p=>{
-
-let risk="منخفض";
-let color="green";
-let ecg="طبيعي";
-let lab="طبيعي";
-let plan=[];
-
-/* ضغط */
-
-if(p.bloodPressure && parseInt(p.bloodPressure)>160){
-risk="مرتفع";
-color="red";
-plan.push("خفض الضغط فوراً");
+function toggleDark(){
+document.body.classList.toggle("dark");
+localStorage.setItem("dark",document.body.classList.contains("dark"));
 }
 
-/* LDL */
-
-if(p.ldl && parseInt(p.ldl)>130){
-risk="متوسط";
-color="orange";
-plan.push("Statins");
+if(localStorage.getItem("dark")==="true"){
+document.body.classList.add("dark");
 }
 
-/* ECG */
+/* ===== التنقل ===== */
 
-if(p.ecg && p.ecg.includes("ST")){
-ecg="اشتباه جلطة";
-risk="مرتفع";
-color="red";
+function go(page){
+window.location=page;
 }
 
-/* Troponin */
+/* ===== تسجيل خروج ===== */
 
-if(p.troponin && parseFloat(p.troponin)>0.04){
-lab="MI";
-risk="مرتفع";
-color="red";
-plan.push("Aspirin + نقل عاجل");
+function logout(){
+localStorage.clear();
+location.href="../index.html";
 }
-
-/* عرض */
-
-aiTable.innerHTML+=`
-<tr>
-<td>${p.name}</td>
-<td style="color:${color};font-weight:bold">${risk}</td>
-<td>${ecg}</td>
-<td>${lab}</td>
-<td>${plan.join("<br>")}</td>
-</tr>
-`;
-
-});
-
-}
-
-runAI();
 
 </script>
 
