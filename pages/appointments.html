@@ -1,396 +1,214 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نظام مركز القلب - إدارة المواعيد</title>
 
-<title>إدارة المواعيد | نظام مركز القلب</title>
-
+<!-- الخطوط والأيقونات -->
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.8/index.global.min.css">
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.8/index.global.min.css">
-
+<!-- مكتبات JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.8/index.global.min.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
 <style>
-
-body{
-font-family:'Tajawal',sans-serif;
-margin:0;
-background:#f4f7fb;
-}
-
-/* الهيدر */
-
-header{
-background:linear-gradient(135deg,#0d6efd,#001f4d);
-color:white;
-padding:15px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-
-.container{
-max-width:1300px;
-margin:auto;
-padding:20px;
-}
-
-/* الكروت */
-
-.card{
-background:white;
-padding:20px;
-border-radius:10px;
-box-shadow:0 4px 20px rgba(0,0,0,0.1);
-margin-bottom:20px;
-}
-
-/* الفورم */
-
-.formGrid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:10px;
-}
-
-input,select{
-padding:10px;
-border-radius:8px;
-border:1px solid #ccc;
-font-family:'Tajawal';
-}
-
-/* الأزرار */
-
-button{
-padding:10px 15px;
-border:none;
-border-radius:8px;
-cursor:pointer;
-font-weight:bold;
-}
-
-.addBtn{background:#0d6efd;color:white;}
-.smsBtn{background:#198754;color:white;}
-.printBtn{background:#6c757d;color:white;}
-
-/* التقويم */
-
-#calendar{
-margin-top:20px;
-}
-
-/* الإحصائيات */
-
-.stats{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:15px;
-}
-
-.statBox{
-background:#eef3ff;
-padding:20px;
-border-radius:10px;
-text-align:center;
-font-size:18px;
-}
-
-/* بيانات المريض */
-
-.patientInfo{
-background:#f1f5ff;
-padding:15px;
-border-radius:10px;
-margin-top:10px;
-}
-
-/* QR */
-
-.qrBox{
-text-align:center;
-margin-top:20px;
-}
-
+/* ===== أسلوب عام ===== */
+body{font-family:'Tajawal',sans-serif;margin:0;background:#f4f6f9;transition:0.3s;}
+body.dark{background:#121212;color:white;}
+header{background:linear-gradient(135deg,#0d6efd,#001f4d);color:white;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;}
+header h2{margin:0;font-size:20px;}
+.nav{display:flex;flex-wrap:wrap;align-items:center;}
+.nav a,.nav button{background:white;color:#0d6efd;padding:8px 12px;border:none;border-radius:6px;font-weight:bold;cursor:pointer;text-decoration:none;margin:3px;transition:0.3s;}
+.nav a:hover,.nav button:hover{background:#e6e6e6;}
+.container{width:95%;max-width:1300px;margin:20px auto;}
+.card{background:white;padding:20px;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,0.1);margin-bottom:20px;transition:0.3s;}
+body.dark .card{background:#1e1e1e;color:white;box-shadow:none;}
+h3{color:#0d6efd;margin-bottom:15px;}
+body.dark h3{color:#6aa0ff;}
+input,select,textarea{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #ccc;}
+body.dark input,body.dark select,body.dark textarea{background:#2c2c2c;color:white;border:1px solid #555;}
+button.addBtn{background:#0d6efd;color:white;border:none;padding:12px;border-radius:8px;cursor:pointer;font-weight:bold;width:100%;}
+button.smsBtn{background:#198754;color:white;}
+button.printBtn{background:#6c757d;color:white;}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;}
+.statBox{background:#eef3ff;padding:20px;border-radius:10px;text-align:center;font-size:18px;}
+body.dark .statBox{background:#2c2c2c;}
+#calendar{margin-top:20px;}
+.patientInfo{background:#f1f5ff;padding:15px;border-radius:10px;margin-top:10px;}
+body.dark .patientInfo{background:#2c2c2c;}
+.qrBox{text-align:center;margin-top:20px;}
+.deleteBtn{background:#dc3545;color:white;border:none;border-radius:6px;padding:6px 10px;cursor:pointer;}
+table{width:100%;border-collapse:collapse;margin-top:20px;}
+th,td{padding:10px;text-align:center;border:1px solid #ddd;}
+th{background:#0d6efd;color:white;}
+body.dark th{background:#084298;}
 </style>
-
 </head>
 
 <body>
 
 <header>
-
-<h2>🫀 إدارة المواعيد - مركز القلب</h2>
-
-<button class="printBtn" onclick="window.print()">🖨 طباعة</button>
-
+<h2>🫀 نظام مركز القلب</h2>
+<div class="nav">
+<span id="currentUser"></span>
+<a href="dashboard.html"><i class="fa fa-home"></i> الرئيسية</a>
+<a href="patients.html"><i class="fa fa-user-injured"></i> المرضى</a>
+<a href="appointments.html"><i class="fa fa-calendar-check"></i> المواعيد</a>
+<a href="operations.html"><i class="fa fa-heart-pulse"></i> العمليات</a>
+<a href="pharmacy.html"><i class="fa fa-pills"></i> الصيدلية</a>
+<a href="tests.html"><i class="fa fa-flask"></i> التحاليل</a>
+<button onclick="toggleDarkMode()">🌙 / ☀️</button>
+<button onclick="logout()">خروج</button>
+</div>
 </header>
 
 <div class="container">
 
 <!-- حجز موعد -->
-
 <div class="card">
-
 <h3>➕ حجز موعد جديد</h3>
-
-<div class="formGrid">
-
 <select id="patientSelect" onchange="showPatientInfo()">
 <option value="">اختر المريض</option>
 </select>
-
+<input type="text" id="doctor" placeholder="اسم الطبيب">
 <input type="date" id="date">
-
 <input type="time" id="time">
-
 <select id="service">
 <option>تخطيط قلب ECG</option>
 <option>إيكو القلب Echo</option>
 <option>استشارة قلبية</option>
 <option>فحص جهد</option>
 </select>
-
-<input type="text" id="doctor" placeholder="اسم الطبيب">
-
 <input type="text" id="location" placeholder="الجناح / الغرفة">
-
-</div>
-
-<div class="patientInfo" id="patientInfo">
-بيانات المريض ستظهر هنا
-</div>
-
+<div class="patientInfo" id="patientInfo">بيانات المريض ستظهر هنا</div>
 <br>
-
 <button class="addBtn" onclick="addAppointment()">💾 حفظ الموعد</button>
-
 <button class="smsBtn" onclick="sendSMS()">📱 إرسال تذكير SMS</button>
-
 </div>
 
 <!-- إحصائيات -->
-
 <div class="card">
-
 <h3>📊 إحصائيات المركز</h3>
-
 <div class="stats">
-
-<div class="statBox">
-مواعيد اليوم
-<br>
-<span id="todayCount">0</span>
+<div class="statBox">مواعيد اليوم<br><span id="todayCount">0</span></div>
+<div class="statBox">إجمالي المواعيد<br><span id="totalAppointments">0</span></div>
+<div class="statBox">عدد المرضى<br><span id="totalPatients">0</span></div>
 </div>
-
-<div class="statBox">
-إجمالي المواعيد
-<br>
-<span id="totalAppointments">0</span>
-</div>
-
-<div class="statBox">
-عدد المرضى
-<br>
-<span id="totalPatients">0</span>
-</div>
-
-</div>
-
 </div>
 
 <!-- التقويم -->
-
 <div class="card">
-
 <h3>📅 تقويم المواعيد</h3>
-
 <div id="calendar"></div>
-
 </div>
 
 <!-- QR -->
-
 <div class="card qrBox">
-
 <h3>📱 تأكيد الوصول</h3>
-
 <canvas id="qr"></canvas>
-
 </div>
 
 </div>
 
 <script>
+/* ===== حماية الصفحة وصلاحيات ===== */
+if(localStorage.getItem("loggedIn")!=="true"){
+    alert("الرجاء تسجيل الدخول");
+    window.location.href="../index.html";
+}
+let currentUser = localStorage.getItem("currentUser") || "ضيف";
+document.getElementById("currentUser").innerText = "👤 "+currentUser;
+let role = localStorage.getItem("userRole") || "staff";
 
-/* تحميل البيانات */
+/* ===== بيانات ===== */
+let patients = JSON.parse(localStorage.getItem("patients"))||[];
+let appointments = JSON.parse(localStorage.getItem("appointments"))||[];
 
-let patients = JSON.parse(localStorage.getItem("patients")) || [];
-let appointments = JSON.parse(localStorage.getItem("appointments")) || [];
-
+/* ===== تحميل المرضى ===== */
 let patientSelect = document.getElementById("patientSelect");
-
-/* تعبئة المرضى */
-
-patients.forEach((p,index)=>{
-
-let option=document.createElement("option");
-
-option.value=index;
-
-option.textContent = p.id + " | " + p.name;
-
-patientSelect.appendChild(option);
-
+patients.forEach((p,i)=>{
+    let opt=document.createElement("option");
+    opt.value=i; opt.textContent=p.id+" | "+p.name;
+    patientSelect.appendChild(opt);
 });
-
 document.getElementById("totalPatients").innerText = patients.length;
 
-/* عرض بيانات المريض */
-
+/* ===== عرض بيانات المريض ===== */
 function showPatientInfo(){
-
-let index = patientSelect.value;
-
-if(index==="") return;
-
-let p = patients[index];
-
-document.getElementById("patientInfo").innerHTML =
-
-`
-<b>الاسم:</b> ${p.name} <br>
-<b>العمر:</b> ${p.age} <br>
-<b>الجنس:</b> ${p.gender} <br>
-<b>رقم المريض:</b> ${p.id}
-`;
-
+    let index = patientSelect.value;
+    if(index==="") return;
+    let p = patients[index];
+    document.getElementById("patientInfo").innerHTML =
+    `<b>الاسم:</b> ${p.name}<br>
+     <b>العمر:</b> ${p.age}<br>
+     <b>الجنس:</b> ${p.gender}<br>
+     <b>رقم المريض:</b> ${p.id}`;
 }
 
-/* إضافة موعد */
-
+/* ===== إضافة موعد ===== */
 function addAppointment(){
-
-let index = patientSelect.value;
-
-if(index===""){
-
-alert("اختر المريض");
-
-return;
-
+    let index=patientSelect.value;
+    if(index===""){ alert("اختر المريض"); return; }
+    let p = patients[index];
+    let appointment={
+        id:"APT-"+Date.now(),
+        patientId:p.id,
+        patient:p.name,
+        date:document.getElementById("date").value,
+        time:document.getElementById("time").value,
+        service:document.getElementById("service").value,
+        doctor:document.getElementById("doctor").value,
+        location:document.getElementById("location").value
+    };
+    appointments.push(appointment);
+    localStorage.setItem("appointments",JSON.stringify(appointments));
+    generateQR(appointment.id);
+    loadCalendar();
+    updateStats();
+    alert("✅ تم حجز الموعد");
 }
 
-let p = patients[index];
-
-let appointment = {
-
-id:"APT-"+Date.now(),
-
-patientId:p.id,
-
-patient:p.name,
-
-date:document.getElementById("date").value,
-
-time:document.getElementById("time").value,
-
-service:document.getElementById("service").value,
-
-doctor:document.getElementById("doctor").value,
-
-location:document.getElementById("location").value
-
-};
-
-appointments.push(appointment);
-
-localStorage.setItem("appointments",JSON.stringify(appointments));
-
-generateQR(appointment.id);
-
-loadCalendar();
-
-updateStats();
-
-alert("تم حجز الموعد بنجاح");
-
-}
-
-/* التقويم */
-
+/* ===== التقويم ===== */
 function loadCalendar(){
-
-let calendarEl=document.getElementById("calendar");
-
-let events = appointments.map(a=>{
-
-return{
-
-title:a.patient+" - "+a.service,
-
-start:a.date+"T"+a.time
-
-};
-
-});
-
-let calendar = new FullCalendar.Calendar(calendarEl,{
-
-initialView:'dayGridMonth',
-
-height:600,
-
-events:events
-
-});
-
-calendar.render();
-
+    let calendarEl=document.getElementById("calendar");
+    calendarEl.innerHTML="";
+    let events = appointments.map(a=>({title:a.patient+" - "+a.service,start:a.date+"T"+a.time}));
+    let calendar = new FullCalendar.Calendar(calendarEl,{
+        initialView:'dayGridMonth',
+        height:500,
+        events:events
+    });
+    calendar.render();
 }
 
-/* الإحصائيات */
-
+/* ===== الإحصائيات ===== */
 function updateStats(){
-
-let today = new Date().toISOString().split("T")[0];
-
-let todayCount = appointments.filter(a=>a.date===today).length;
-
-document.getElementById("todayCount").innerText = todayCount;
-
-document.getElementById("totalAppointments").innerText = appointments.length;
-
+    let today=new Date().toISOString().split("T")[0];
+    let todayCount=appointments.filter(a=>a.date===today).length;
+    document.getElementById("todayCount").innerText=todayCount;
+    document.getElementById("totalAppointments").innerText=appointments.length;
 }
 
-/* QR */
-
+/* ===== QR ===== */
 function generateQR(id){
-
-QRCode.toCanvas(document.getElementById("qr"), id);
-
+    QRCode.toCanvas(document.getElementById("qr"),id);
 }
 
-/* SMS */
+/* ===== SMS ===== */
+function sendSMS(){ alert("📱 تم إرسال تذكير للمريض"); }
 
-function sendSMS(){
+/* ===== وضع ليلي ===== */
+function toggleDarkMode(){ document.body.classList.toggle("dark"); }
 
-alert("📱 تم إرسال تذكير للمريض بالموعد");
+/* ===== خروج ===== */
+function logout(){ localStorage.clear(); window.location.href="../index.html"; }
 
-}
-
-/* تشغيل النظام */
-
+/* ===== تشغيل النظام ===== */
 loadCalendar();
 updateStats();
-
 </script>
 
 </body>
