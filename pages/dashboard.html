@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>لوحة التحكم Ultra Pro | مركز القلب</title>
+<title>لوحة التحكم Pro | مركز القلب</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -17,6 +17,7 @@
 <style>
 
 /* ===== عام ===== */
+
 body{
 font-family:'Tajawal';
 margin:0;
@@ -30,6 +31,7 @@ color:white;
 }
 
 /* ===== الهيدر ===== */
+
 header{
 background:linear-gradient(135deg,#0d6efd,#001f4d);
 color:white;
@@ -53,17 +55,20 @@ font-weight:bold;
 }
 
 #currentUser{
+margin-left:10px;
 font-weight:bold;
 }
 
-/* ===== الحاوية ===== */
+/* ===== المحتوى ===== */
+
 .container{
 width:95%;
 margin:auto;
 padding:20px;
 }
 
-/* ===== الإحصائيات ===== */
+/* ===== البطاقات ===== */
+
 .dashboard{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
@@ -82,48 +87,42 @@ box-shadow:0 5px 15px rgba(0,0,0,0.1);
 background:#1e293b;
 }
 
-/* ===== الأقسام الاحترافية ===== */
-.sections{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-gap:15px;
-margin:25px 0;
+.card h3{
+color:#0d6efd;
 }
 
-.sectionCard{
-padding:20px;
-border-radius:15px;
+/* ===== أزرار سريعة ===== */
+
+.quick{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+gap:10px;
+margin:20px 0;
+}
+
+.quick button{
+padding:10px;
+border:none;
+border-radius:8px;
+background:#0d6efd;
 color:white;
 cursor:pointer;
-transition:0.3s;
-text-align:center;
 }
-
-.sectionCard:hover{
-transform:translateY(-8px) scale(1.03);
-box-shadow:0 15px 30px rgba(0,0,0,0.2);
-}
-
-.sectionCard i{font-size:30px;}
-.sectionCard p{font-size:22px;font-weight:bold;}
-
-/* ألوان */
-.patients{background:linear-gradient(135deg,#0d6efd,#4dabf7);}
-.appointments{background:linear-gradient(135deg,#20c997,#0ca678);}
-.tests{background:linear-gradient(135deg,#fd7e14,#f59f00);}
-.operations{background:linear-gradient(135deg,#dc3545,#c92a2a);}
-.pharmacy{background:linear-gradient(135deg,#6f42c1,#7950f2);}
-.reports{background:linear-gradient(135deg,#343a40,#495057);}
 
 /* ===== التقويم ===== */
+
 #calendar{
 background:white;
 padding:10px;
 border-radius:10px;
 }
-.dark #calendar{background:#1e293b;}
+
+.dark #calendar{
+background:#1e293b;
+}
 
 /* ===== التنبيهات ===== */
+
 .alerts{
 background:#fff3cd;
 padding:15px;
@@ -131,11 +130,13 @@ border-radius:10px;
 margin-top:20px;
 }
 
-.dark .alerts{
-background:#3a2e05;
+.alerts li{
+margin:5px 0;
+font-weight:bold;
 }
 
-/* ===== توقيع ===== */
+/* ===== التوقيع ===== */
+
 .dev{
 text-align:center;
 margin-top:20px;
@@ -157,9 +158,10 @@ animation:move 6s linear infinite;
 
 <header>
 
-<h2>🫀 مركز القلب Ultra</h2>
+<h2>🫀 مركز القلب - Pro</h2>
 
 <div class="nav">
+
 <span id="currentUser"></span>
 
 <a href="patients.html">👤 المرضى</a>
@@ -171,6 +173,7 @@ animation:move 6s linear infinite;
 
 <button onclick="toggleDark()">🌙</button>
 <button onclick="logout()">🚪</button>
+
 </div>
 
 </header>
@@ -180,145 +183,162 @@ animation:move 6s linear infinite;
 <h2>📊 لوحة التحكم الذكية</h2>
 
 <!-- إحصائيات -->
+
 <div class="dashboard">
+
 <div class="card"><h3>👤 المرضى</h3><p id="patientsCount">0</p></div>
 <div class="card"><h3>📅 اليوم</h3><p id="todayAppointments">0</p></div>
 <div class="card"><h3>🧪 التحاليل</h3><p id="testsCount">0</p></div>
 <div class="card"><h3>🫀 العمليات</h3><p id="operationsCount">0</p></div>
-</div>
-
-<!-- أقسام -->
-<div class="sections">
-
-<div class="sectionCard patients" onclick="go('patients.html')">
-<i class="fa-solid fa-user-injured"></i>
-<h3>المرضى</h3>
-<p id="patientsCount2">0</p>
-</div>
-
-<div class="sectionCard appointments" onclick="go('appointments.html')">
-<i class="fa-solid fa-calendar-check"></i>
-<h3>المواعيد</h3>
-<p id="appointmentsCount">0</p>
-</div>
-
-<div class="sectionCard tests" onclick="go('tests.html')">
-<i class="fa-solid fa-vial"></i>
-<h3>التحاليل</h3>
-<p id="testsCount2">0</p>
-</div>
-
-<div class="sectionCard operations" onclick="go('operations.html')">
-<i class="fa-solid fa-heart-pulse"></i>
-<h3>العمليات</h3>
-<p id="operationsCount2">0</p>
-</div>
-
-<div class="sectionCard pharmacy" onclick="go('pharmacy.html')">
-<i class="fa-solid fa-pills"></i>
-<h3>الصيدلية</h3>
-<p id="pharmacyCount2">0</p>
-</div>
-
-<div class="sectionCard reports" onclick="go('reports.html')">
-<i class="fa-solid fa-chart-line"></i>
-<h3>التقارير</h3>
-<p>📊</p>
-</div>
 
 </div>
 
-<!-- Chart -->
+<!-- أزرار -->
+
+<div class="quick">
+<button onclick="go('patients.html')">➕ مريض</button>
+<button onclick="go('appointments.html')">📅 موعد</button>
+<button onclick="go('tests.html')">🧪 تحليل</button>
+<button onclick="go('operations.html')">🫀 عملية</button>
+</div>
+
+<!-- رسم -->
+
 <canvas id="chart"></canvas>
 
-<!-- Calendar -->
+<!-- تقويم -->
+
 <div id="calendar"></div>
 
-<!-- Alerts -->
+<!-- تنبيهات -->
+
 <div class="alerts">
 <h3>⚠ التنبيهات الطبية</h3>
 <ul id="alertsList"></ul>
 </div>
 
-<div class="dev">برمجة D / Salah</div>
+<div class="dev">
+برمجة وتصميم D / Salah Al-ahdel
+</div>
 
 </div>
 
 <script>
 
-/* حماية */
+/* ===== حماية ===== */
 if(localStorage.getItem("loggedIn") !== "true"){
 location.href="../index.html";
 }
 
-/* المستخدم */
-currentUser.innerText = "👤 " + (localStorage.getItem("currentUser")||"");
+/* ===== المستخدم ===== */
+document.getElementById("currentUser").innerText =
+"👤 " + (localStorage.getItem("currentUser") || "");
 
-/* صلاحيات */
+/* ===== الصلاحيات ===== */
 let role = localStorage.getItem("userRole");
-if(role==="nurse"){
-operationsLink.style.display="none";
+
+/* إخفاء العمليات للممرض */
+if(role === "nurse"){
+document.getElementById("operationsLink").style.display="none";
 }
 
-/* بيانات */
-let patients = JSON.parse(localStorage.getItem("patients"))||[];
-let appointments = JSON.parse(localStorage.getItem("appointments"))||[];
-let tests = JSON.parse(localStorage.getItem("tests"))||[];
-let operations = JSON.parse(localStorage.getItem("operations"))||[];
-let pharmacy = JSON.parse(localStorage.getItem("pharmacy"))||[];
+/* ===== البيانات ===== */
+let patients = JSON.parse(localStorage.getItem("patients")) || [];
+let appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+let tests = JSON.parse(localStorage.getItem("tests")) || [];
+let operations = JSON.parse(localStorage.getItem("operations")) || [];
 
-/* إحصائيات */
+/* ===== الإحصائيات ===== */
+
 patientsCount.innerText = patients.length;
 testsCount.innerText = tests.length;
 operationsCount.innerText = operations.length;
-patientsCount2.innerText = patients.length;
-appointmentsCount.innerText = appointments.length;
-testsCount2.innerText = tests.length;
-operationsCount2.innerText = operations.length;
-pharmacyCount2.innerText = pharmacy.length;
 
-let today=new Date().toISOString().split("T")[0];
-todayAppointments.innerText=appointments.filter(a=>a.date===today).length;
+let today = new Date().toISOString().split("T")[0];
 
-/* Chart */
+todayAppointments.innerText =
+appointments.filter(a=>a.date===today).length;
+
+/* ===== الرسم ===== */
+
 new Chart(document.getElementById("chart"),{
 type:"bar",
 data:{
 labels:["مرضى","تحاليل","عمليات"],
-datasets:[{data:[patients.length,tests.length,operations.length]}]
+datasets:[{
+label:"إحصائيات النظام",
+data:[patients.length,tests.length,operations.length]
+}]
 }
 });
 
-/* Calendar */
-let calendar=new FullCalendar.Calendar(document.getElementById("calendar"),{
+/* ===== التقويم ===== */
+
+let calendar = new FullCalendar.Calendar(document.getElementById("calendar"),{
+
 initialView:'dayGridMonth',
+
 events:[
-...appointments.map(a=>({title:a.patient+" "+a.time,start:a.date+"T"+a.time})),
-...operations.map(o=>({title:o.patient,start:o.date+"T"+o.time}))
+...appointments.map(a=>({
+title:"📅 " + a.patient + " - " + a.time,
+start:a.date + "T" + a.time
+})),
+
+...operations.map(o=>({
+title:"🫀 " + o.patient + " - " + o.time,
+start:o.date + "T" + o.time
+}))
 ]
+
 });
+
 calendar.render();
 
-/* Alerts */
-alertsList.innerHTML="";
+/* ===== التنبيهات ===== */
+
+function loadAlerts(){
+
+alertsList.innerHTML = "";
+
 patients.forEach(p=>{
-if(p.bloodPressure>160){
-alertsList.innerHTML+=`<li>⚠ ضغط مرتفع: ${p.name}</li>`;
+
+if(p.bloodPressure && parseInt(p.bloodPressure) > 160){
+alertsList.innerHTML += `<li>⚠ ضغط مرتفع: ${p.name}</li>`;
 }
+
+if(p.ldl && parseInt(p.ldl) > 130){
+alertsList.innerHTML += `<li>⚠ كوليسترول مرتفع: ${p.name}</li>`;
+}
+
 });
 
-/* Dark */
+}
+
+loadAlerts();
+
+/* ===== الوضع الليلي ===== */
+
 function toggleDark(){
 document.body.classList.toggle("dark");
 localStorage.setItem("dark",document.body.classList.contains("dark"));
 }
+
 if(localStorage.getItem("dark")==="true"){
 document.body.classList.add("dark");
 }
 
-/* Nav */
-function go(p){location=p;}
-function logout(){localStorage.clear();location="../index.html";}
+/* ===== التنقل ===== */
+
+function go(page){
+window.location = page;
+}
+
+/* ===== تسجيل خروج ===== */
+
+function logout(){
+localStorage.clear();
+location.href="../index.html";
+}
 
 </script>
 
